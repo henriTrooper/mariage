@@ -1,7 +1,7 @@
 const router = require('express').Router();
 /* const mongoose = require('mongoose'); */
 const bodyParser = require('body-parser');
-const Logger = require('../../utils/logger');
+const Logger = require('../utils/logger');
 const { save } = require('../services/post/post.service');
 const { getFindAll } = require('../services/get/get.services');
 

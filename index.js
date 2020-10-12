@@ -8,7 +8,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const config = require('./src/config');
 const Logger = require('./src/utils/logger');
-const api = require('./src/backend/router/router');
+const api = require('./src/router/router');
 const Stream = require('./src/utils/stream');
 const { truncateSync } = require('fs');
 
