@@ -63,7 +63,7 @@ Production:
   only:
     - master
   stage: deploy
-
+  script: npm run prod
   environment:
     name: production
     url: https://example.com
