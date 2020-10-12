@@ -1,0 +1,12 @@
+>>> Date : 2020-10-12 16:28:07
+
+     Informations: Starting server
+
+     Probleme(s): Neant !
+
+>>> Date : 2020-10-12 16:28:07
+
+     Informations: Connect mongodb OPEN
+
+     Probleme(s): Neant !
+

@@ -1,0 +1,25 @@
+version: '3.7' # specify docker-compose version
+
+# Define the services/containers to be run
+services:
+  web:
+    build: .
+    command: npm run dev
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    
+  sonar:
+    image:  sonarqube:latest
+    ports:
+        -  "9000:9000"
+        -  "9092:9092"
+
+  database: # name of the seconde service
+    # specify image to build container from
+    image: mongo
+    ports:
+      - "27017:27017" # specify port forewarding
+

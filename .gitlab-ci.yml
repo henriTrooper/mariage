@@ -1,0 +1,70 @@
+image: node:latest
+
+stages:
+  - check
+  - test
+  - sonar
+  - build
+  - deploy
+
+cache:
+  paths:
+      - node_modules/
+
+
+Security:
+  stage: check
+  script:
+    - npx audit-ci --moderate
+
+Lint:
+  stage: check
+  image: node:12
+  script:
+      - npm install
+      - npm install --silent
+      - npm run lint
+
+Test:
+  stage: test
+  image: weboaks/node-karma-protractor-chrome
+  script:
+      - npm install --silent
+      - npm run test
+
+Sonar:
+    stage: sonar
+    image:
+        name: sonarsource/sonar-scanner-cli:latest
+        entrypoint: [""]
+    variables:
+        SONAR_USER_HOME: "base_angular_nodejs/.sonar"  # Defines the location of the analysis task cache
+        GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+    cache:
+        key: "J9yuPbmKmKRNKhnKXaUv"
+        paths:
+        - .sonar/cache
+    script:
+        - sonar-scanner -Dsonar.qualitygate.wait=true
+    allow_failure: true
+    only:
+        - master
+
+Build:
+  stage: build
+  script:
+     - npm run build
+  artifacts:
+    paths:
+      - node_modules/
+
+Production:
+  image: node:12
+  only:
+    - master
+  stage: deploy
+
+  environment:
+    name: production
+    url: https://example.com
+
