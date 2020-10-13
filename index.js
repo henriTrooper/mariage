@@ -8,10 +8,11 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const config = require('./src/config');
 const Logger = require('./src/utils/logger');
-const api = require('./src/router/router');
+const api = require('./src/router/router')
 const Stream = require('./src/utils/stream');
-const { truncateSync } = require('fs');
-
+// Mise en place de Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger');
 
 const app = express();
 app.logger = Logger;
@@ -19,10 +20,6 @@ app.server = new Server(app);
 
 // Sécurité
 app.set('trust proxy', 1); // trust first proxy
-
-// Mise en place de Swagger
-const swaggerUi = require('swagger-ui-express');
-swaggerDocument = require('./swagger.json');
 
 
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
