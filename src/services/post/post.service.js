@@ -12,19 +12,19 @@ router.logger = Logger;
 async function save(req) {
   try {
     const regiment = await new Regiments({
-    nom: req.body.nom || 'Rpima',
-    numero: req.body.numero || 9,
-    description: req.body.description || 'parachutistes',
-    types: req.body.types || [],
+      nom: req.body.nom || 'Rpima',
+      numero: req.body.numero || 9,
+      description: req.body.description || 'parachutistes',
+      types: req.body.types || [],
     });
     const newRegiment = await regiment.save();
-    return newRegiment
+    return newRegiment;
   } catch (e) {
     router.logger.warn('Echec de la requete /save', e);
-    return e
+    return e;
   }
 }
 
 module.exports = {
-  save
+  save,
 };

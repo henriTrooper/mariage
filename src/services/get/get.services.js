@@ -11,13 +11,13 @@ router.logger = Logger;
 async function getFindAll() {
   try {
     const getAll = await Regiments.find({});
-    return getAll
+    return getAll;
   } catch (e) {
     router.logger.warn('Echec Request', e);
-    return e
-    }
+    return e;
+  }
 }
 
 module.exports = {
-  getFindAll
+  getFindAll,
 };

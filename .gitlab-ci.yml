@@ -11,6 +11,7 @@ cache:
   paths:
       - node_modules/
 
+
 Security:
   stage: check
   script:
@@ -32,22 +33,9 @@ Test:
       - npm run test
 
 Sonar:
-    stage: sonar
-    image:
-        name: sonarsource/sonar-scanner-cli:latest
-        entrypoint: [""]
-    variables:
-        SONAR_USER_HOME: "base_angular_nodejs/.sonar"  # Defines the location of the analysis task cache
-        GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-    cache:
-        key: "J9yuPbmKmKRNKhnKXaUv"
-        paths:
-        - .sonar/cache
-    script:
-        - sonar-scanner -Dsonar.qualitygate.wait=true
-    allow_failure: true
-    only:
-        - master
+  stage: sonar
+  script :
+    - npm run sonar
 
 Build:
   stage: build
@@ -58,11 +46,12 @@ Build:
       - node_modules/
 
 Production:
-  image: node:12
+  image: node:8.11.3
   only:
     - master
   stage: deploy
-  script: npm run prod
+  script:
+    - npm run prod
   environment:
     name: production
     url: https://example.com

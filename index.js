@@ -20,6 +20,10 @@ app.server = new Server(app);
 // Sécurité
 app.set('trust proxy', 1); // trust first proxy
 
+// Mise en place de Swagger
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
+
 
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
 
@@ -150,6 +154,9 @@ app.use(session({
     secure: true,
   },
 }));
+
+//Route de Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 module.exports = app;

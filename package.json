@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon",
-    "lint": "",
+    "lint": "eslint src --fix",
     "test": "mocha --exit",
     "sonar": "node sonar-project.js",
     "build": "",
@@ -29,7 +29,8 @@
     "mongoose": "^5.8.3",
     "pino": "^5.15.0",
     "sonarqube-scanner": "^2.7.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
