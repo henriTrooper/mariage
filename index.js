@@ -6,9 +6,10 @@ const {
 const helmet = require('helmet');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const config = require('./src/config');
+const config = require('./src/DB_config');
 const Logger = require('./src/utils/logger');
-const api = require('./src/router/router')
+const api = require('./src/router/router');
+const cors = require('cors');
 
 // Mise en place de Swagger
 const swaggerUi = require('swagger-ui-express');
@@ -118,17 +119,24 @@ app.closed = function closed() {
 
 
 // ------------------------------------Middleware-------------------------------------------------------------------
-// Lien avec le fichier de routage
-app.use('/', api);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: false
 }));
 
 // parse application/json
 app.use(bodyParser.json());
 
+let corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
+
+// Lien avec le fichier de routage
+app.use('/api', api);
 
 /**
  *Il protège votre application en configurant différents en-têtes HTTP .

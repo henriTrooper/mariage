@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bodyParser = require('body-parser');
 const Regiments = require('../../models/Regiments');
 const Logger = require('../../utils/logger');
+
 const { urlencoded, json } = bodyParser;
 
 router.use(json());
@@ -17,14 +18,14 @@ const error = {};
  */
 async function save(req) {
   try {
+    
     const regiment = await new Regiments({
       isPublic: req.body.isPublic,
       name: req.body.name,
       description: req.body.description,
       carriere: req.body.carriere,
       collegues: req.body.collegues,
-      });
-
+    });
     return await regiment.save();
   } catch (e) {
     return error({

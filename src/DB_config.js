@@ -10,6 +10,7 @@ const defaults = {
   },
   mongo: {
     uri: 'mongodb://localhost:27017/User_regiment',
+    secret: 'henriJWT',
     opts: {
       poolSize: 20,
     },

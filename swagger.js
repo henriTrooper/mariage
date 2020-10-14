@@ -16,7 +16,7 @@ const swaggerDocument = {
     }
   },
   servers: [{
-      url: 'http://localhost:3000/',
+      url: 'http://localhost:3000/api',
       description: 'Local server'
     },
     {
@@ -69,16 +69,16 @@ const swaggerDocument = {
     description: 'API for users in the system'
   }],
   "paths": {
-    "/addUser": {
+    "/api/addUser": {
       "post": postUser
     },
-    "/": {
+    "/api": {
       "get": getStart
     },
-    "/users": {
+    "/api/users": {
       "get": getUser
     },
-    "/user/{id}": {
+    "/api/user/{id}": {
       "parameters": [{
         "name": "id",
         "in": "path",

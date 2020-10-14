@@ -10,7 +10,6 @@ const {
   getFindAllUser,
 } = require('../services/get/{user}/get.service');
 
-
 const {
   save,
 } = require('../services/post/post.service');
@@ -28,6 +27,10 @@ const {
   json,
 } = bodyParser;
 
+//Middlaware Auth
+const user = require('../Auth/UserController')
+const { authMiddleware } = require('../Auth/UserController')
+
 router.use(json());
 router.use(urlencoded({
   extended: true,
@@ -35,9 +38,10 @@ router.use(urlencoded({
 
 router.logger = Logger;
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                                                  /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                                                   * * * * * * * * * * * ROUTAGE * * * * * * * * * * ** * * * * * * *
                                                   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
@@ -148,5 +152,18 @@ router.delete('/user/:userId', async (req, res) => {
     });
   }
 });
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* * * * * * * * * * * ROUTAGE AUTHENTIFICATION  * * * * * * * * *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.post('/register', user.register)
+
+router.post('/login', user.login)
+
+// the user is not logged in, then it won’t be able to access the route and redirect to the login page in clientside based on the response.
+router.get('/profile', authMiddleware, function (req, res) {
+  res.json({ 'access': true })
+})
 
 module.exports = router;

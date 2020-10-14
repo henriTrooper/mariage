@@ -10,10 +10,10 @@ const RegimentsSchema = new mongoose.Schema({
   carriere: [
     {
       compagnie: Number,
-      date: Date
-    }
+      date: Date,
+    },
   ],
- 
+
 });
 
 // On exporte le Shema
