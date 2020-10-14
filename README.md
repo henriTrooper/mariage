@@ -34,11 +34,11 @@
 
         Appel sur endpoint (post) /addUser (fsrc/router.router.js)
         Appel du service /addUser (src/services/post) 
-        Réquétage dans la BD (mongodb > save())
+        Requétage dans la BD (mongodb > save())
         Swagger permet de sécuriser les responses envoyé du back
 
 
-## Swagger:
+## Swagger: Tuto https://medium.com/@kirtikau/how-to-add-swagger-ui-to-existing-node-js-and-express-js-project-2c8bad9364ce
 
     Fichier de base : swagger.js
             - Configuration de Swagger
@@ -173,6 +173,10 @@
             NB: Ne pas oublier l'import de deleteById dans le router.
 
             Lancer Swagger, tester la nouvelle route
+
+
+
+    
 
 
 

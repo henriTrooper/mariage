@@ -1,4 +1,3 @@
-
 const dotenv = require('dotenv');
 
 const defaults = {
@@ -10,11 +9,8 @@ const defaults = {
     // https://www.npmjs.com/package/cors#configuration-options
   },
   mongo: {
-    uri: 'mongodb://localhost:27017/TUTO_REGIMENT',
+    uri: 'mongodb://localhost:27017/User_regiment',
     opts: {
-      autoReconnect: true,
-      reconnectTries: 10,
-      reconnectInterval: 1,
       poolSize: 20,
     },
   },

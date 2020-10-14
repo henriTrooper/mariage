@@ -1,16 +1,16 @@
 const started = {
-  "tags": [
-    "Users"
+  tags: [
+    'Users',
   ],
-  "summary": "Started road",
-  "responses": {
-    "200": {
-      "description": "OK",
-      "schema": {
-        "$ref": "#/definitions/Users"
-      }
-    }
-  }
-}
+  summary: 'Started road',
+  responses: {
+    200: {
+      description: 'OK',
+      schema: {
+        $ref: '#/definitions/Users',
+      },
+    },
+  },
+};
 
 module.exports = started;

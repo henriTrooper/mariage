@@ -3,16 +3,17 @@
 const mongoose = require('mongoose');
 
 const RegimentsSchema = new mongoose.Schema({
-  nom: String,
-  numero: Number,
+  isPublic: Boolean,
+  name: String,
   description: String,
-  image: String,
-  types: [
+  collegues: [],
+  carriere: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Types',
-    },
+      compagnie: Number,
+      date: Date
+    }
   ],
+ 
 });
 
 // On exporte le Shema

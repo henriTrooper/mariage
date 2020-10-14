@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const config = require('./src/config');
 const Logger = require('./src/utils/logger');
 const api = require('./src/router/router')
-const Stream = require('./src/utils/stream');
+
 // Mise en place de Swagger
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger');
@@ -27,14 +27,17 @@ app.set('trust proxy', 1); // trust first proxy
 async function connectMongo(reconnectTries = 10, reconnectInterval = 1000) {
   try {
     await mongoose.connect(config.mongo.uri, {
+      keepAlive: true,
       useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
       ...config.mongo.opts,
     });
   } catch (err) {
     await new Promise((success, reject) => {
       if (reconnectTries > 0) {
         app.logger.warn('Retrying to connect to mongo');
-        Stream.writeLog('Retrying to connect to mongo');
         setTimeout(() => connectMongo(reconnectTries - 1, reconnectInterval).then(success, reject), 1);
       } else reject(err);
     });
@@ -56,15 +59,12 @@ app.warmup = async function warmup() {
   this.logger.info('loading...Connecting to mongo ');
   await connectMongo(config.mongo.reconnectTries, config.mongo.reconnectInterval);
   this.logger.info('Connect mongodb OPEN');
-  Stream.writeLog('Connect mongodb OPEN');
 
   mongoose.connection.on('disconnected', () => {
     this.logger.warn('Connect mongodb CLOSE');
-    Stream.writeLog('Connect mongodb CLOSE');
   });
   mongoose.connection.on('reconnectFailed', () => {
     this.logger.fatal('Retrying to connect to mongo failed !!!!!!');
-    Stream.writeLog('Retrying to connect to mongo failed !!!!!!');
     app.close();
   });
 };
@@ -75,7 +75,6 @@ app.warmup = async function warmup() {
  */
 app.start = async function start() {
   this.logger.info('Starting server');
-  Stream.writeLog('Starting server');
   await app.warmup();
   app.server.listen(config.port);
 };
@@ -83,7 +82,6 @@ app.start = async function start() {
 app.start()
   .catch((err) => {
     app.logger.fatal('Server has crashed');
-    Stream.writeLog('Server has crashed', err);
     app.logger.fatal(err);
     process.exit(1);
   });
@@ -104,11 +102,9 @@ app.started = function started() {
  */
 app.close = async function close() {
   this.logger.info('Closing server');
-  Stream.writeLog('Closing server');
   // Close http server
   await mongoose.disconnect();
   this.logger.info('Connections closed');
-  Stream.writeLog('Connections closed');
   app.server.close();
 };
 
@@ -118,7 +114,6 @@ app.close = async function close() {
  */
 app.closed = function closed() {
   this.logger.info('Server closed');
-  Stream.writeLog('Server closed');
 };
 
 
@@ -127,7 +122,9 @@ app.closed = function closed() {
 app.use('/', api);
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 // parse application/json
 app.use(bodyParser.json());
