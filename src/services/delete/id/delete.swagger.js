@@ -5,38 +5,44 @@ const deleteById = {
   summary: 'Delete user with given ID',
   description: 'Delete ID',
   operationId: 'deletebyId',
-  parameters: [],
+  parameters: [{
+    name: 'id',
+    in: 'header',
+    required: true,
+    description: 'ID of user that we want to find',
+    type: 'string',
+  }],
   responses: {
     200: {
       description: 'User is deleted',
       content: {
         'application/json': {
           schema: {
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/User',
           },
           example: {
             success: true,
-            user: "user"
-          }
-        }
-      }
+            user: 'user',
+          },
+        },
+      },
     },
     400: {
       description: 'Echec Delete',
       content: {
         'application/json': {
           schema: {
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Error',
           },
           example: {
             success: false,
             message: 'Echec Delete',
-            options: "error stack"
-          }
-        }
-      }
-    }
-  }
-}
+            options: 'error stack',
+          },
+        },
+      },
+    },
+  },
+};
 
 module.exports = deleteById;

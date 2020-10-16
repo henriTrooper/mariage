@@ -1,7 +1,7 @@
 const pino = require('pino');
+const dotenv = require('dotenv');
 const { name, version } = require('../../package.json');
 
-const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = pino({

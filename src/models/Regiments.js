@@ -1,11 +1,18 @@
 // ------------------------------------Modelele MONGOOSE--------------------------------------------------------------------
-
 const mongoose = require('mongoose');
 
-const RegimentsSchema = new mongoose.Schema({
-  isPublic: Boolean,
-  name: String,
-  description: String,
+const { Schema } = mongoose;
+
+const RegimentsSchema = new Schema({
+  isPublic: {
+    type: Boolean,
+  },
+  name: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
   collegues: [],
   carriere: [
     {

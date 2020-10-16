@@ -5,37 +5,32 @@ const Logger = require('../../../utils/logger');
 
 const {
   urlencoded,
-  json
+  json,
 } = bodyParser;
 
 router.use(json());
 router.use(urlencoded({
-  extended: true
+  extended: true,
 }));
 router.logger = Logger;
 
 /** Function called in the router on the way GET "/users"
  *
- * @returns
+ * @param {*} req
+ * @param {*} res
  */
 async function getFindAllUser(req, res) {
-  return await Regiments.find({}, function (err, user) {
+  await Regiments.find({}, (err, user) => {
     if (err) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
-        message: "Find User Echec"
-      })
-    }
-    if (user) {
-      return res.status(200).json({
-        success: true,
-        user: user
-      })
+        message: 'Find User Echec',
+      });
     } else {
-      return res.status(400).json({
-        success: false,
-        message: "Missing parameters"
-      })
+      res.status(200).json({
+        success: true,
+        user,
+      });
     }
   });
 }

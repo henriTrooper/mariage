@@ -9,35 +9,26 @@ router.use(json());
 router.use(urlencoded({ extended: true }));
 router.logger = Logger;
 
-/** Function called in the router on the way PPUT "/user/:userId"
- *
+/** Function called in the router on the way PUT "/user/:userId"
  *
  * @param {*} req
- * @returns
+ * @param {*} res
  */
 async function updateById(req, res) {
-    const id = req.params.userId;
-    
-    return await Regiments.findOneAndUpdate({ _id: id }, req.body, {useFindAndModify: false}, function (err, user) {
-      if (err) {
-        return res.status(400).json({
-          success: false,
-          message: "Update Echec"
-        })
-      }
-      if (user) {
-        return res.status(200).json({
-          success: true,
-          user: user
-        })
-      }
-      else {
-       return res.status(400).json({
-          success: false,
-          message: "Missing parameters"
-        })
-      }
-    });
+  const id = req.params.userId;
+  await Regiments.findOneAndUpdate({ _id: id }, req.body, { useFindAndModify: false }, (err, user) => {
+    if (err) {
+      res.status(400).json({
+        success: false,
+        message: 'Update Echec',
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    }
+  });
 }
 
 module.exports = {

@@ -2,7 +2,7 @@ const postUser = {
   tags: [
     'Users',
   ],
-  summary: "Create User",
+  summary: 'Create User',
   description: 'Create new user in DB',
   operationId: 'createUsers',
   parameters: [],
@@ -10,11 +10,11 @@ const postUser = {
     content: {
       'application/json': {
         schema: {
-          $ref: '#/definitions/User'
-        }
-      }
+          $ref: '#/definitions/User',
+        },
+      },
     },
-    required: true
+    required: true,
   },
   responses: {
     200: {
@@ -22,38 +22,36 @@ const postUser = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/User',
           },
           example: {
             success: true,
-            user: "user"
-          }
-        }
+            user: 'user',
+          },
+        },
       },
       links: {
         create: {
-            $ref: '#/definitions/links/create'
-          }
-      }
+          $ref: '#/definitions/links/create',
+        },
+      },
     },
     400: {
       description: 'Echec Delete',
       content: {
         'application/json': {
           schema: {
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Error',
           },
           example: {
             success: false,
             message: 'Echec Delete',
-            options: "error stack"
-          }
-        }
-      }
-    }
-  }
-}
-
-
+            options: 'error stack',
+          },
+        },
+      },
+    },
+  },
+};
 
 module.exports = postUser;

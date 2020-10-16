@@ -2,7 +2,7 @@ const updateById = {
   tags: [
     'Users',
   ],
-  summary: "Update User",
+  summary: 'Update User',
   description: 'Update user in DB by ID',
   operationId: 'updateUsers',
   parameters: [],
@@ -10,11 +10,11 @@ const updateById = {
     content: {
       'application/json': {
         schema: {
-          $ref: '#/definitions/User'
-        }
-      }
+          $ref: '#/definitions/User',
+        },
+      },
     },
-    required: true
+    required: true,
   },
   responses: {
     200: {
@@ -22,36 +22,36 @@ const updateById = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/User',
           },
           example: {
             success: true,
-            user: "user"
-          }
-        }
+            user: 'user',
+          },
+        },
       },
       links: {
         update: {
-            $ref: '#/definitions/links/update'
-          }
-      }
+          $ref: '#/definitions/links/update',
+        },
+      },
     },
     400: {
       description: 'Echec Delete',
       content: {
         'application/json': {
           schema: {
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Error',
           },
           example: {
             success: false,
             message: 'Echec Delete',
-            options: "error stack"
-          }
-        }
-      }
-    }
-  }
-}
+            options: 'error stack',
+          },
+        },
+      },
+    },
+  },
+};
 
 module.exports = updateById;

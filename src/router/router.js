@@ -30,10 +30,10 @@ const {
   login,
 } = require('../services/post/Auth/login/login.service');
 
-//Middlaware Auth
+// Middlaware Auth
 const {
-  authMiddleware
-} = require('../Middlewares/userController')
+  authMiddleware,
+} = require('../Middlewares/userController');
 
 const {
   urlencoded,
@@ -47,12 +47,13 @@ router.use(urlencoded({
 
 router.logger = Logger;
 
-const { validateEmail } = require('../utils/utils') 
+const {
+  validateEmail,
+} = require('../utils/utils');
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * * * * * * * * * * * ROUTAGE * * * * * * * * * * ** * * * * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
@@ -62,8 +63,8 @@ router.get('/', async (req, res) => {
   try {
     await getFindAllStarted(req, res);
   } catch (e) {
-     res.status(400).json({
-      success: 'false',
+    res.status(400).json({
+      success: false,
       message: 'Echec de la requete /',
       error: e,
     });
@@ -74,8 +75,8 @@ router.get('/users', async (req, res) => {
   try {
     await getFindAllUser(req, res);
   } catch (e) {
-     res.status(400).json({
-      success: 'false',
+    res.status(400).json({
+      success: false,
       message: 'Echec de la requete /users',
       error: e,
     });
@@ -87,25 +88,26 @@ router.get('/users', async (req, res) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/addUser', async (req, res) => {
-  try {
-    if (!req.body.name) {
-      return res.status(400).send({
+  if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'Name is required',
+    });
+  } else if (typeof (req.body.isPublic) !== 'boolean') {
+    res.status(400).send({
+      success: false,
+      message: 'isPublic is required or syntaxe incorrect',
+    });
+  } else {
+    try {
+      await save(req, res);
+    } catch (e) {
+      res.status(400).json({
         success: false,
-        message: 'Name is required',
-      });
-    } else if (!req.body.isPublic) {
-      return res.status(400).send({
-        success: false,
-        message: 'isPublic is required',
+        message: 'Echec de la requete /addUser',
+        error: e,
       });
     }
-    await save(req, res);
-  } catch (e) {
-     res.status(400).json({
-      success: false,
-      message: 'Echec de la requete /addUser',
-      error: e,
-    });
   }
 });
 
@@ -114,24 +116,26 @@ router.post('/addUser', async (req, res) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.put('/user/:userId', async (req, res) => {
-  try {
-    if (!req.body.name) {
-      return res.status(400).send({
+  if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'Name is required',
+    });
+  } else if (typeof (req.body.isPublic) !== 'boolean') {
+    res.status(400).send({
+      success: false,
+      message: 'isPublic is required',
+    });
+  } else {
+    try {
+      await updateById(req, res);
+    } catch (e) {
+      res.status(404).send({
         success: false,
-        message: 'Name is required',
-      });
-    } else if (!req.body.isPublic) {
-      return res.status(400).send({
-        success: false,
-        message: 'isPublic is required',
+        message: 'Echec de la requete UPDATE /user/:userId',
+        error: e,
       });
     }
-    await updateById(req, res);
-  } catch (e) {
-     res.status(404).send({
-      success: 'false',
-      message: 'Echec de la requete UPDATE /user/:userId',
-    });
   }
 });
 
@@ -140,21 +144,21 @@ router.put('/user/:userId', async (req, res) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.delete('/user/:userId', async (req, res) => {
-  try {
-    if (req.params.userId) {
+  if (!req.headers.id) {
+    res.status(400).send({
+      success: false,
+      message: 'No ID find',
+    });
+  } else {
+    try {
       await deleteById(req, res);
-    } else {
-      return res.status(400).json({
+    } catch (e) {
+      res.status(400).json({
         success: false,
-        message: 'No param ID find',
+        message: 'Echec de la requete DELETE /user/:userId',
+        error: e,
       });
     }
-  } catch (e) {
-     res.status(400).json({
-      success: false,
-      message: 'Echec de la requete DELETE /user/:userId',
-      error: e,
-    });
   }
 });
 
@@ -163,65 +167,63 @@ router.delete('/user/:userId', async (req, res) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/register', async (req, res) => {
-  try {
-    if ( validateEmail(req.body.email) === false ) {
-      return res.status(400).send({
-        success: false,
-        message: 'Email is not valid',
-      });
-    }
-    if (!req.body.password) {
-      return res.status(400).send({
-        success: false,
-        message: 'Password is required',
-      });
-    }
-    if (req.body.password != req.body.passwordConfirmation) {
-      return res.status(400).send({
-        success: false,
-        message: 'Password does not match'
-      })
-    }
-    await register(req, res)
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: 'Echec de la requete /register',
-      error: e,
-    });
-  }
-})
-
-router.post('/login', async (req, res) => {
-  try {
-    if (!req.body.password) {
-      return res.status(400).send({
-        success: false,
-        message: 'Password not find'
-      })
-  }
-  if (!req.body.email || validateEmail(req.body.email) === false ) {
-    return res.status(400).send({
+  if (validateEmail(req.body.email) === false) {
+    res.status(400).send({
       success: false,
       message: 'Email is not valid',
-    })
-}
-    await login(req, res)
-  } catch (e) {
-    res.status(400).json({
-      success: 'false',
-      message: 'Echec de la requete /login',
-      error: e,
     });
+  } else if (!req.body.password) {
+    res.status(400).send({
+      success: false,
+      message: 'Password is required',
+    });
+  } else if (req.body.password !== req.body.passwordConfirmation) {
+    res.status(400).send({
+      success: false,
+      message: 'Password does not match',
+    });
+  } else {
+    try {
+      await register(req, res);
+    } catch (e) {
+      res.status(400).json({
+        success: false,
+        message: 'Echec de la requete /register',
+        error: e,
+      });
+    }
   }
-})
+});
+
+router.post('/login', async (req, res) => {
+  if (!req.body.password) {
+    res.status(400).send({
+      success: false,
+      message: 'Password not find',
+    });
+  } else if (!req.body.email || validateEmail(req.body.email) === false) {
+    res.status(400).send({
+      success: false,
+      message: 'Email is not valid',
+    });
+  } else {
+    try {
+      await login(req, res);
+    } catch (e) {
+      res.status(400).json({
+        success: false,
+        message: 'Echec de la requete /login',
+        error: e,
+      });
+    }
+  }
+});
 
 // the user is not logged in, then it won’t be able to access the route and redirect to the login page in clientside based on the response.
-router.get('/profile', authMiddleware, function (req, res) {
-  console.log('eeeeeeeeee')
+router.get('/profile', authMiddleware, (req, res) => {
   res.json({
-    'access': true
-  })
-})
+    access: true,
+  });
+});
 
 module.exports = router;

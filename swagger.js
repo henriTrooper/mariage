@@ -62,7 +62,7 @@ const swaggerDocument = {
       ApiKeyAuth: {
         type: 'apiKey',
         in: 'header',
-        name: 'x-api-key',
+        name: 'authorization',
       }
     }
   },
@@ -90,13 +90,6 @@ const swaggerDocument = {
       get: getUser
     },
     "/user/{id}": {
-      parameters: [{
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "description": "ID of user that we want to find",
-        "type": "string"
-      }],
       delete: deleteById,
       put: updateById
     },
