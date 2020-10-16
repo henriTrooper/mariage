@@ -59,35 +59,19 @@ const {
  * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.get('/', async (req, res) => {
-  try {
-    await getFindAllStarted(req, res);
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: 'Echec de la requete /',
-      error: e,
-    });
-  }
+router.get('/', authMiddleware, async (req, res) => {
+  await getFindAllStarted(req, res);
 });
 
-router.get('/users', async (req, res) => {
-  try {
-    await getFindAllUser(req, res);
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: 'Echec de la requete /users',
-      error: e,
-    });
-  }
+router.get('/users', authMiddleware, async (req, res) => {
+  await getFindAllUser(req, res);
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * * * * * * * * * * * ROUTAGE POST  * * * * * * * * * * ** * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.post('/addUser', async (req, res) => {
+router.post('/addUser', authMiddleware, async (req, res) => {
   if (!req.body.name) {
     res.status(400).send({
       success: false,
@@ -99,15 +83,7 @@ router.post('/addUser', async (req, res) => {
       message: 'isPublic is required or syntaxe incorrect',
     });
   } else {
-    try {
-      await save(req, res);
-    } catch (e) {
-      res.status(400).json({
-        success: false,
-        message: 'Echec de la requete /addUser',
-        error: e,
-      });
-    }
+    await save(req, res);
   }
 });
 
@@ -115,7 +91,7 @@ router.post('/addUser', async (req, res) => {
  * * * * * * * * * * * ROUTAGE UPDATE  * * * * * * * * * * ** * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.put('/user/:userId', async (req, res) => {
+router.put('/user/:userId', authMiddleware, async (req, res) => {
   if (!req.body.name) {
     res.status(400).send({
       success: false,
@@ -127,15 +103,7 @@ router.put('/user/:userId', async (req, res) => {
       message: 'isPublic is required',
     });
   } else {
-    try {
-      await updateById(req, res);
-    } catch (e) {
-      res.status(404).send({
-        success: false,
-        message: 'Echec de la requete UPDATE /user/:userId',
-        error: e,
-      });
-    }
+    await updateById(req, res);
   }
 });
 
@@ -143,22 +111,14 @@ router.put('/user/:userId', async (req, res) => {
  * * * * * * * * * * * ROUTAGE DELETE  * * * * * * * * * * ** * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.delete('/user/:userId', async (req, res) => {
+router.delete('/user/:userId', authMiddleware, async (req, res) => {
   if (!req.headers.id) {
     res.status(400).send({
       success: false,
       message: 'No ID find',
     });
   } else {
-    try {
-      await deleteById(req, res);
-    } catch (e) {
-      res.status(400).json({
-        success: false,
-        message: 'Echec de la requete DELETE /user/:userId',
-        error: e,
-      });
-    }
+    await deleteById(req, res);
   }
 });
 
@@ -183,15 +143,7 @@ router.post('/register', async (req, res) => {
       message: 'Password does not match',
     });
   } else {
-    try {
-      await register(req, res);
-    } catch (e) {
-      res.status(400).json({
-        success: false,
-        message: 'Echec de la requete /register',
-        error: e,
-      });
-    }
+    await register(req, res);
   }
 });
 
@@ -207,15 +159,7 @@ router.post('/login', async (req, res) => {
       message: 'Email is not valid',
     });
   } else {
-    try {
-      await login(req, res);
-    } catch (e) {
-      res.status(400).json({
-        success: false,
-        message: 'Echec de la requete /login',
-        error: e,
-      });
-    }
+    await login(req, res);
   }
 });
 

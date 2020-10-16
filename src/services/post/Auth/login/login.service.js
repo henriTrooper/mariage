@@ -42,7 +42,7 @@ async function login(req, res) {
           username: user.username,
         },
         process.env.JWT_KEY, {
-          expiresIn: '1h',
+          expiresIn: '24h',
         });
         res.status(200).json({
           success: true,

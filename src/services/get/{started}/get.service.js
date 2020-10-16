@@ -26,6 +26,11 @@ async function getFindAllStarted(req, res) {
         success: false,
         message: 'Started Echec',
       });
+    } else if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'No user find',
+      });
     } else if (user) {
       res.status(200).json({
         success: true,

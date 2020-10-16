@@ -55,14 +55,14 @@ const swaggerDocument = {
     },
   ],
   security: [{
-    ApiKeyAuth: []
+    bearerAuth: []
   }],
   components: {
     securitySchemes: {
-      ApiKeyAuth: {
-        type: 'apiKey',
-        in: 'header',
-        name: 'authorization',
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
       }
     }
   },

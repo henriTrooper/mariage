@@ -26,7 +26,12 @@ async function getFindAllUser(req, res) {
         success: false,
         message: 'Find User Echec',
       });
-    } else {
+    } else if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'No user find',
+      });
+    } else if (user) {
       res.status(200).json({
         success: true,
         user,

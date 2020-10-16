@@ -30,10 +30,15 @@ async function deleteById(req, res) {
         success: false,
         message: 'Delete Echec',
       });
-    } else {
+    } else if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'No user find',
+      });
+    } else if (user) {
       res.status(200).json({
         success: true,
-        user,
+        usser: user,
       });
     }
   });

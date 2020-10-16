@@ -15,7 +15,7 @@ router.logger = Logger;
  * @param {*} res
  */
 async function updateById(req, res) {
-  const id = req.params.userId;
+  const { id } = req.headers;
   await Regiments.findOneAndUpdate({ _id: id }, req.body, { useFindAndModify: false }, (err, user) => {
     if (err) {
       res.status(400).json({

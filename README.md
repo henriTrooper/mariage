@@ -4,6 +4,12 @@
 
     Installation NodeJs
 
+    Commande python pour generer le token admin: Attention au secret, il doit etre identique a process.env.JWT_TOKEN
+    $ AUTHORIZATION="true" NAME="admin" EMAIL="mersch.henri@icloud.com" EXPIREIN=1634389472 SECRET="henriJWT" python encrypting.py
+
+    TOKEN_ADMIN a ajouter pour l'authorization dans openAPI:
+    $ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpemF0aW9uIjoidHJ1ZSIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoibWVyc2NoLmhlbnJpQGljbG91ZC5jb20iLCJleHAiOjE2MzQzODk0NzJ9.sYijTBmwJekE0cvYTqc___NAi3kIsv5635iA_lrRUjc
+
 
 ## Commandes de lancement des différents Scripts
 

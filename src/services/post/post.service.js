@@ -30,7 +30,12 @@ async function save(req, res) {
         success: false,
         message: 'Create Echec',
       });
-    } else {
+    } else if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'No user save',
+      });
+    } else if (user) {
       res.status(200).json({
         success: true,
         user,

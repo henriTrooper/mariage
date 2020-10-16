@@ -5,7 +5,13 @@ const updateById = {
   summary: 'Update User',
   description: 'Update user in DB by ID',
   operationId: 'updateUsers',
-  parameters: [],
+  parameters: [{
+    name: 'id',
+    in: 'header',
+    required: true,
+    description: 'ID of user that we want to update',
+    type: 'string',
+  }],
   requestBody: {
     content: {
       'application/json': {
