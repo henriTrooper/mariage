@@ -23,13 +23,22 @@ const {
 } = require('../services/update/id/update.service');
 
 const {
+  register,
+} = require('../services/post/Auth/register/register.service');
+
+const {
+  login,
+} = require('../services/post/Auth/login/login.service');
+
+//Middlaware Auth
+const {
+  authMiddleware
+} = require('../Middlewares/userController')
+
+const {
   urlencoded,
   json,
 } = bodyParser;
-
-//Middlaware Auth
-const user = require('../Auth/UserController')
-const { authMiddleware } = require('../Auth/UserController')
 
 router.use(json());
 router.use(urlencoded({
@@ -38,25 +47,22 @@ router.use(urlencoded({
 
 router.logger = Logger;
 
-                                                  /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-                                                  * * * * * * * * * * * ROUTAGE * * * * * * * * * * ** * * * * * * *
-                                                  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+const { validateEmail } = require('../utils/utils') 
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * ROUTAGE * * * * * * * * * * ** * * * * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/', async (req, res) => {
   try {
-    const getAll = await getFindAllStarted();
-    res.status(200).json({
-      success: 'true',
-      message: 'Find All User',
-      users: getAll,
-    });
+    await getFindAllStarted(req, res);
   } catch (e) {
-    res.status(400).json({
+     res.status(400).json({
       success: 'false',
       message: 'Echec de la requete /',
       error: e,
@@ -66,14 +72,9 @@ router.get('/', async (req, res) => {
 
 router.get('/users', async (req, res) => {
   try {
-    const getAll = await getFindAllUser();
-    res.status(200).json({
-      success: 'true',
-      message: 'Find All User',
-      users: getAll,
-    });
+    await getFindAllUser(req, res);
   } catch (e) {
-    res.status(400).json({
+     res.status(400).json({
       success: 'false',
       message: 'Echec de la requete /users',
       error: e,
@@ -82,31 +83,26 @@ router.get('/users', async (req, res) => {
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* * * * * * * * * * * ROUTAGE POST  * * * * * * * * * * ** * * * *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * ROUTAGE POST  * * * * * * * * * * ** * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/addUser', async (req, res) => {
   try {
     if (!req.body.name) {
-      res.status(400).send({
-        success: 'false',
+      return res.status(400).send({
+        success: false,
         message: 'Name is required',
       });
     } else if (!req.body.isPublic) {
-      res.status(400).send({
-        success: 'false',
+      return res.status(400).send({
+        success: false,
         message: 'isPublic is required',
       });
     }
-    const newUser = await save(req);
-    res.status(200).json({
-      success: 'true',
-      message: 'User added successfully',
-      user: newUser,
-    });
+    await save(req, res);
   } catch (e) {
-    res.status(400).json({
-      success: 'false',
+     res.status(400).json({
+      success: false,
       message: 'Echec de la requete /addUser',
       error: e,
     });
@@ -114,56 +110,118 @@ router.post('/addUser', async (req, res) => {
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* * * * * * * * * * * ROUTAGE UPDATE  * * * * * * * * * * ** * * *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * ROUTAGE UPDATE  * * * * * * * * * * ** * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.put('/user/:userId', async (req, res) => {
   try {
-    const updatedUser = await updateById(req);
-    res.status(200).json({
-      success: 'true',
-      message: 'User upadted successfully',
-      user: updatedUser.value,
-    });
+    if (!req.body.name) {
+      return res.status(400).send({
+        success: false,
+        message: 'Name is required',
+      });
+    } else if (!req.body.isPublic) {
+      return res.status(400).send({
+        success: false,
+        message: 'isPublic is required',
+      });
+    }
+    await updateById(req, res);
   } catch (e) {
-    res.status(404).send({
+     res.status(404).send({
       success: 'false',
-      message: 'error in update',
+      message: 'Echec de la requete UPDATE /user/:userId',
     });
   }
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* * * * * * * * * * * ROUTAGE DELETE  * * * * * * * * * * ** * * *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * ROUTAGE DELETE  * * * * * * * * * * ** * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.delete('/user/:userId', async (req, res) => {
   try {
-    await deleteById(req);
-    res.status(200).json({
-      success: 'true',
-      message: 'Deleted success',
-    });
+    if (req.params.userId) {
+      await deleteById(req, res);
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'No param ID find',
+      });
+    }
   } catch (e) {
-    res.status(400).json({
-      success: 'false',
-      message: 'Echec de la requete /delete',
+     res.status(400).json({
+      success: false,
+      message: 'Echec de la requete DELETE /user/:userId',
       error: e,
     });
   }
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* * * * * * * * * * * ROUTAGE AUTHENTIFICATION  * * * * * * * * *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * ROUTAGE AUTHENTIFICATION  * * * * * * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.post('/register', user.register)
+router.post('/register', async (req, res) => {
+  try {
+    if ( validateEmail(req.body.email) === false ) {
+      return res.status(400).send({
+        success: false,
+        message: 'Email is not valid',
+      });
+    }
+    if (!req.body.password) {
+      return res.status(400).send({
+        success: false,
+        message: 'Password is required',
+      });
+    }
+    if (req.body.password != req.body.passwordConfirmation) {
+      return res.status(400).send({
+        success: false,
+        message: 'Password does not match'
+      })
+    }
+    await register(req, res)
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: 'Echec de la requete /register',
+      error: e,
+    });
+  }
+})
 
-router.post('/login', user.login)
+router.post('/login', async (req, res) => {
+  try {
+    if (!req.body.password) {
+      return res.status(400).send({
+        success: false,
+        message: 'Password not find'
+      })
+  }
+  if (!req.body.email || validateEmail(req.body.email) === false ) {
+    return res.status(400).send({
+      success: false,
+      message: 'Email is not valid',
+    })
+}
+    await login(req, res)
+  } catch (e) {
+    res.status(400).json({
+      success: 'false',
+      message: 'Echec de la requete /login',
+      error: e,
+    });
+  }
+})
 
 // the user is not logged in, then it won’t be able to access the route and redirect to the login page in clientside based on the response.
 router.get('/profile', authMiddleware, function (req, res) {
-  res.json({ 'access': true })
+  console.log('eeeeeeeeee')
+  res.json({
+    'access': true
+  })
 })
 
 module.exports = router;

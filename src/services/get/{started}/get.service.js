@@ -9,23 +9,30 @@ router.use(json());
 router.use(urlencoded({ extended: true }));
 router.logger = Logger;
 
-const error = {};
-
 /** Function called in the router on the way GET "/"
  *
  * @returns
  */
-async function getFindAllStarted() {
-  try {
-    return await Regiments.find({});
-  } catch (e) {
-    return error({
-      status: 400,
-      success: 'false',
-      message: 'Echec dans le service get/{started}',
-      error: e,
-    });
-  }
+async function getFindAllStarted(req, res) {
+  return await Regiments.find({}, function (err, user) {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: "Started Echec"
+      })
+    }
+    if (user) {
+      return res.status(200).json({
+        success: true,
+        user: user
+      })
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Missing parameters"
+      })
+    }
+  });
 }
 
 module.exports = {

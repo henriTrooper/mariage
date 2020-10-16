@@ -6,7 +6,6 @@ const {
 const helmet = require('helmet');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const config = require('./src/DB_config');
 const Logger = require('./src/utils/logger');
 const api = require('./src/router/router');
 const cors = require('cors');
@@ -25,15 +24,15 @@ app.set('trust proxy', 1); // trust first proxy
 
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
 
-async function connectMongo(reconnectTries = 10, reconnectInterval = 1000) {
+async function connectMongo(reconnectTries = process.env.reconnectTries, reconnectInterval = process.env.reconnectInterval) {
   try {
-    await mongoose.connect(config.mongo.uri, {
-      keepAlive: true,
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useUnifiedTopology: true,
-      ...config.mongo.opts,
+    await mongoose.connect(process.env.URI_MONGODB, {
+      keepAlive: process.env.keepAlive,
+      useNewUrlParser: process.env.useNewUrlParser,
+      useCreateIndex: process.env.useCreateIndex,
+      useFindAndModify: process.env.useFindAndModify,
+      useUnifiedTopology: process.env.useUnifiedTopology,
+      poolSize: process.env.poolSize,
     });
   } catch (err) {
     await new Promise((success, reject) => {
@@ -58,7 +57,7 @@ app.server.on('error', (err) => app.logger.fatal(err));
  */
 app.warmup = async function warmup() {
   this.logger.info('loading...Connecting to mongo ');
-  await connectMongo(config.mongo.reconnectTries, config.mongo.reconnectInterval);
+  await connectMongo(process.env.reconnectTries, process.env.reconnectInterval);
   this.logger.info('Connect mongodb OPEN');
 
   mongoose.connection.on('disconnected', () => {
@@ -77,7 +76,7 @@ app.warmup = async function warmup() {
 app.start = async function start() {
   this.logger.info('Starting server');
   await app.warmup();
-  app.server.listen(config.port);
+  app.server.listen(process.env.port);
 };
 
 app.start()
@@ -149,7 +148,7 @@ app.use(helmet());
  *  pas les données de session.
  */
 app.use(session({
-  secret: 'SECRET_SESSION',
+  secret: process.env.JWT_KEY,
   resave: false,
   saveUninitialized: true,
   cookie: {

@@ -1,9 +1,11 @@
 const pino = require('pino');
-const config = require('../DB_config');
 const { name, version } = require('../../package.json');
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = pino({
   name: `${name}:${version}`,
-  prettyPrint: !config.production,
-  level: config.log,
+  prettyPrint: process.env.production,
+  level: process.env.log,
 });

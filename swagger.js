@@ -4,28 +4,37 @@ const getStart = require('./src/services/get/{started}/get.swagger');
 const deleteById = require('./src/services/delete/id/delete.swagger');
 const updateById = require('./src/services/update/id/update.swagger');
 
+const register = require('./src/services/post/Auth/register/register.swagger');
+const login = require('./src/services/post/Auth/login/login.swagger');
+
 const swaggerDocument = {
-  swagger: '2.0',
+  openapi: '3.0.1',
   info: {
-    version: '1.0.0',
-    title: 'My User Project CRUD',
-    description: 'My User Project Application API',
+    version: '1.3.0',
+    title: 'Users',
+    description: 'User management API',
+    termsOfService: 'https://swagger.io/',
+    contact: {
+      name: 'Mersch Henri',
+      email: 'mersch.henri@icloud.com',
+      url: 'https://www.capgemini.com/'
+    },
     license: {
-      name: 'MIT',
-      url: 'https://opensource.org/licenses/MIT '
+      name: 'Apache 2.0',
+      url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
     }
   },
   servers: [{
       url: 'http://localhost:3000/api',
-      description: 'Local server'
+      description: 'LOCAL server'
     },
     {
       url: 'https://app-dev.herokuapp.com/api/v1',
-      description: 'DEV Env'
+      description: 'DEV server'
     },
     {
       url: "https://{env}.gigantic-server.com:{port}/{basePath}",
-      description: "The production API server",
+      description: "API server",
       variables: {
         "env": {
           "default": "app-dev",
@@ -45,19 +54,18 @@ const swaggerDocument = {
       }
     },
   ],
+  security: [{
+    ApiKeyAuth: []
+  }],
   components: {
-    schemas: {},
     securitySchemes: {
-      bearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT'
+      ApiKeyAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'x-api-key',
       }
     }
   },
-  schemes: [
-    'http'
-  ],
   consumes: [
     'application/json'
   ],
@@ -67,111 +75,163 @@ const swaggerDocument = {
   tags: [{
     name: 'Users',
     description: 'API for users in the system'
+  }, {
+    name: 'Auth',
+    description: 'API for authenticate in the system'
   }],
   "paths": {
-    "/api/addUser": {
-      "post": postUser
+    "/addUser": {
+      post: postUser
     },
-    "/api": {
-      "get": getStart
+    "/": {
+      get: getStart
     },
-    "/api/users": {
-      "get": getUser
+    "/users": {
+      get: getUser
     },
-    "/api/user/{id}": {
-      "parameters": [{
+    "/user/{id}": {
+      parameters: [{
         "name": "id",
         "in": "path",
         "required": true,
         "description": "ID of user that we want to find",
         "type": "string"
       }],
-      "delete": deleteById,
-      "put": updateById
+      delete: deleteById,
+      put: updateById
+    },
+    "/register": {
+      post: register
+    },
+    "/login": {
+      post: login
+    },
+    "/profile": {
+      get: ""
     }
   },
   "definitions": {
-    "User": {
-      "required": [
+    User: {
+      required: [
         "name",
         "isPublic"
       ],
-      "properties": {
-        "isPublic": {
+      properties: {
+        isPublic: {
           "type": "boolean"
         },
-        "name": {
-          "type": "string"
+        name: {
+          type: "string"
         },
-        "description": {
-          "type": "string"
+        description: {
+          type: "string"
         },
-        "carriere": {
-          "type": "array",
-          "items": {
+        carriere: {
+          type: "array",
+          items: {
             "type": "object",
-            "properties": {
-              "compagnie": {
-                "type": "number"
+            properties: {
+              compagnie: {
+                "type": "integer",
+                "format": "int32"
               },
-              "date": {
-                "type": "string"
+              date: {
+                type: "string",
+                format: "date"
               }
             }
           }
-
         },
-        "collegues": {
-          "type": "array",
-          "items": {
-            "type": "string"
+        collegues: {
+          type: "array",
+          items: {
+            type: "string"
           }
         }
       }
     },
-    "updateUser": {
-      "required": [
-        "name",
-        "isPublic"
+    Users: {
+      type: "array",
+      $ref: "#/definitions/User"
+    },
+    Profil: {
+      required: [
+        "username",
+        "email",
+        "password",
+        "passwordConfirmation"
       ],
       "properties": {
-        "isPublic": {
-          "type": "boolean"
-        },
-        "name": {
+        username: {
           "type": "string"
         },
-        "description": {
+        email: {
           "type": "string"
         },
-        "carriere": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "compagnie": {
-                "type": "number"
-              },
-              "date": {
-                "type": "string"
-              }
-            }
-          }
-
+        password: {
+          "type": "string"
         },
-        "collegues": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        passwordConfirmation: {
+          "type": "string"
+        },
+      }
+    },
+    Login: {
+      required: [
+        "email",
+        "password",
+      ],
+      properties: {
+        email: {
+          "type": "string"
+        },
+        password: {
+          "type": "string"
+        }
+      },
+    },
+    Error: {
+      type: 'object',
+      properties: {
+        sucess: {
+          type: 'boolean'
+        },
+        message: {
+          type: 'string'
+        },
+        optional: {
+          type: 'string'
         }
       }
     },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
+    links: {
+      create: {
+        operationId: "createUsers",
+        parameters:{}
+      },
+      findAll: {
+        operationId: "FindAllUsers",
+        parameters:{}
+      },
+      started: {
+        operationId: "Started",
+        parameters:{}
+      },
+      update: {
+        operationId: "updateUsers",
+        parameters:{}
+      },
+      createProfil: {
+        operationId: "createProfilUser",
+        parameters:{}
+      },
+      login: {
+        operationId: "loginUser",
+        parameters:{}
+      },
     }
   }
 }
+
 
 module.exports = swaggerDocument;

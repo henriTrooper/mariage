@@ -38,7 +38,7 @@
         Swagger permet de sécuriser les responses envoyé du back
 
 
-## Swagger: Tuto https://medium.com/@kirtikau/how-to-add-swagger-ui-to-existing-node-js-and-express-js-project-2c8bad9364ce
+## Swagger: Tuto https://medium.com/wolox/documenting-a-nodejs-rest-api-with-openapi-3-swagger-5deee9f50420
 
     Fichier de base : swagger.js
             - Configuration de Swagger
@@ -56,112 +56,99 @@
 
         - Création du endPoint dans src/router/router.js
         
-            router.delete("/user/:userId", async (req, res) => {
+           router.delete('/user/:userId', async (req, res) => {
                 try {
-                    await deleteById(req)
-                    res.status(200).json({
-                    success: "true",
-                    message: "Deleted success",
+                    if (req.params.userId) {
+                    await deleteById(req, res);
+                    } else {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'No param ID find',
                     });
+                    }
                 } catch (e) {
                     res.status(400).json({
-                    success: "false",
-                    message: "Echec de la requete /delete",
+                    success: false,
+                    message: 'Echec de la requete DELETE /user/:userId',
                     error: e,
                     });
                 }
-            });
+                });
 
         - Création du dossier src/services/delete/{id}
         - Création d'un fichier delete.service.js  <services>
 
-            async function deleteById(req) {
-                try {
-                    console.log(req.params)
-                    const id = parseInt(req.params.userId, 10);
-                    console.log(id)
-                    for(let i = 0; i < userList.length; i++){
-                        if(userList[i].id === id){
-                            userList.splice(i,1);
-                            return id
-                        }
+            async function deleteById(req, res) {
+                    const id = req.params.userId ;
+                    return await Regiments.findByIdAndRemove(id, {useFindAndModify: false}, function (err, user) {
+                    if (err) {
+                        return res.status(400).json({
+                        success: false,
+                        message: "Delete Echec"
+                        })
                     }
-                } catch (e) {
-                    return status(400).json({
-                    success: "false",
-                    message: 'Echec dans le service /delete',
-                    error: e,
+                    if (user) {
+                        return res.status(200).json({
+                        success: true,
+                        user: user
+                        })
+                    }
+                    else {
+                    return res.status(400).json({
+                        success: false,
+                        message: "ID not find"
+                        })
+                    }
                     });
                 }
-}
 
         - Création d'un fichier delete.swagger.js   <documentation de la route>
 
-                const deleteById = {
-                    "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of user that we want to delete",
-                    "type": "integer"
-                    }],
-                    "summary": "Delete user with given ID",
-                    "tags": [
-                        "Users"
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "User is deleted",
-                            "schema": {
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    },
-                    "definitions": {
-                        "User": {
-                            "required": [
-                                "name",
-                                "_id",
-                                "companies"
-                            ],
-                            "properties": {
-                                "_id": {
-                                    "type": "integer",
-                                    "uniqueItems": true
+               const deleteById = {
+                        tags: [
+                            'Users',
+                        ],
+                        summary: 'Delete user with given ID',
+                        description: 'Delete ID',
+                        operationId: 'deletebyId',
+                        parameters: [],
+                        responses: {
+                            200: {
+                            description: 'User is deleted',
+                            content: {
+                                'application/json': {
+                                schema: {
+                                    $ref: '#/definitions/User'
                                 },
-                                "isPublic": {
-                                    "type": "boolean"
-                                },
-                                "name": {
-                                    "type": "string"
-                                },
-                                "books": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "amount": {
-                                                "type": "number"
-                                            }
-                                        }
-                                    }
-
-                                },
-                                "companies": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
+                                example: {
+                                    success: true,
+                                    user: "user"
+                                }
                                 }
                             }
+                            },
+                            400: {
+                            description: 'Echec Delete',
+                            content: {
+                                'application/json': {
+                                schema: {
+                                    $ref: '#/definitions/Error'
+                                },
+                                example: {
+                                    success: false,
+                                    message: 'Echec Delete',
+                                    options: "error stack"
+                                }
+                                }
+                            }
+                            }
                         }
-                    }
                 }
 
-                module.exports = deleteById;
+                module.exports = {
+                        deleteById,
+                };
+
 
             - Dans le fichier de config Swagger: swagger.js
 
@@ -175,8 +162,17 @@
             Lancer Swagger, tester la nouvelle route
 
 
+## Création d'une connexion sécurisé JWT : STEP 1 - 13 : https://appdividend.com/2020/07/09/angular-authentication-system-login-and-registration-in-angular/
 
-    
+But: Création de trois routes /register , /login , /profil
+Création d'un schema mongoose spéciale pour User
+Sauvegarde d'un nouvelle Utilisateur avec encryption du mot de passe en base
+Login d'un utilisateur, vérification de la présence de l'utilisateur en base, génération d'un token aec id et username
+Renvoie du token pour décrytage coté front
+
+
+
+
 
 
 
