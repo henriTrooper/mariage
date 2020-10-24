@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const Regiments = require('../../../models/Regiments');
+const Data = require('../../../models/data');
 const Logger = require('../../../utils/logger');
 
 const { urlencoded, json } = bodyParser;
@@ -16,7 +16,7 @@ router.logger = Logger;
  */
 async function updateById(req, res) {
   const { id } = req.headers;
-  await Regiments.findOneAndUpdate({ _id: id }, req.body, { useFindAndModify: false }, (err, user) => {
+  await Data.findOneAndUpdate({ _id: id }, req.body, { useFindAndModify: false }, (err, user) => {
     if (err) {
       res.status(400).json({
         success: false,

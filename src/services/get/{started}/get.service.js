@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const Regiments = require('../../../models/Regiments');
+const Data = require('../../../models/data');
 const Logger = require('../../../utils/logger');
 
 const {
@@ -20,22 +20,19 @@ router.logger = Logger;
  * @param {*} res
  */
 async function getFindAllStarted(req, res) {
-  await Regiments.find({}, (err, user) => {
+  await Data.find({}, (err, users) => {
     if (err) {
       res.status(400).json({
         success: false,
         message: 'Started Echec',
       });
-    } else if (!user) {
+    } else if (!users) {
       res.status(400).json({
         success: false,
         message: 'No user find',
       });
-    } else if (user) {
-      res.status(200).json({
-        success: true,
-        user,
-      });
+    } else if (users) {
+      res.status(200).json(users);
     }
   });
 }

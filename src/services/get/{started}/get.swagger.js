@@ -15,8 +15,7 @@ const started = {
             $ref: '#/definitions/Users',
           },
           example: {
-            success: true,
-            user: 'users',
+            users: 'users[]',
           },
         },
       },

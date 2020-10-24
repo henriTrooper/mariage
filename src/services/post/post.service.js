@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
 
-const Regiments = require('../../models/Regiments');
+const Data = require('../../models/data');
 const Logger = require('../../utils/logger');
 
 const {
@@ -23,8 +23,8 @@ router.logger = Logger;
  * @returns
  */
 async function save(req, res) {
-  const regiment = await new Regiments(req.body);
-  await regiment.save({}, (err, user) => {
+  const data = await new Data(req.body);
+  await data.save({}, (err, user) => {
     if (err) {
       res.status(400).json({
         success: false,

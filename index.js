@@ -21,83 +21,124 @@ app.server = new Server(app);
 // Sécurité
 app.set('trust proxy', 1); // trust first proxy
 
+const port = process.env.PORT || 3000;
+/* const http = require('http');
+const fs = require('fs');
+const html = fs.readFileSync('index.html');
+
+var log = function(entry) {
+    fs.appendFileSync('/tmp/sample-app.log', new Date().toISOString() + ' - ' + entry + '\n');
+}; */
+
+/* var server = http.createServer(function (req, res) {
+    if (req.method === 'POST') {
+        var body = '';
+
+        req.on('data', function(chunk) {
+            body += chunk;
+        });
+
+        req.on('end', function() {
+            if (req.url === '/') {
+                log('Received message: ' + body);
+            } else if (req.url = '/scheduled') {
+                log('Received task ' + req.headers['x-aws-sqsd-taskname'] + ' scheduled at ' + req.headers['x-aws-sqsd-scheduled-at']);
+            }
+
+            res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});
+            res.end();
+        });
+    } else {
+        res.writeHead(200);
+        res.write(html);
+        res.end();
+    }
+}); */
+
+// Listen on port 3000, IP defaults to 127.0.0.1
+//server.listen(port);
+
+// Put a friendly message on the terminal
+//console.log('Server running at http://127.0.0.1:' + port + '/');
+
 
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
 
-async function connectMongo(reconnectTries = process.env.reconnectTries, reconnectInterval = process.env.reconnectInterval) {
-  try {
-    await mongoose.connect(process.env.URI_MONGODB, {
-      keepAlive: process.env.keepAlive,
-      useNewUrlParser: process.env.useNewUrlParser,
-      useCreateIndex: process.env.useCreateIndex,
-      useFindAndModify: process.env.useFindAndModify,
-      useUnifiedTopology: process.env.useUnifiedTopology,
-      poolSize: process.env.poolSize,
-    });
-  } catch (err) {
-    await new Promise((success, reject) => {
-      if (reconnectTries > 0) {
-        app.logger.warn('Retrying to connect to mongo');
-        setTimeout(() => connectMongo(reconnectTries - 1, reconnectInterval).then(success, reject), 1);
-      } else reject(err);
-    });
+/* URI_MONGODB="mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority"
+
+reconnectTries=10
+reconnectInterval=1000
+poolSize=20
+keepAlive=true
+useNewUrlParser=true
+useCreateIndex=true
+useFindAndModify=false
+useUnifiedTopology=true */
+
+async function connectMongo() {
+  const MongoClient = require('mongodb').MongoClient;
+  const uri = "mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority";
+  const client = new MongoClient(uri, { useNewUrlParser: true });
+  client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+  });
   }
-}
+  
+  // ------------------------------------Mise en route du server-------------------------------------------------------------------
 
-// ------------------------------------Mise en route du server-------------------------------------------------------------------
-
-// Hooking up
-app.server.on('close', () => app.closed());
-app.server.on('listening', () => app.started());
-app.server.on('error', (err) => app.logger.fatal(err));
+  
+  app.server.on('close', () => app.closed());
+  app.server.on('listening', () => app.started());
+  app.server.on('error', (err) => app.logger.fatal(err));
 
 
 /**
  * Called before starting the web server
  */
 app.warmup = async function warmup() {
-  this.logger.info('loading...Connecting to mongo ');
-  await connectMongo(process.env.reconnectTries, process.env.reconnectInterval);
-  this.logger.info('Connect mongodb OPEN');
-
-  mongoose.connection.on('disconnected', () => {
-    this.logger.warn('Connect mongodb CLOSE');
-  });
-  mongoose.connection.on('reconnectFailed', () => {
-    this.logger.fatal('Retrying to connect to mongo failed !!!!!!');
-    app.close();
-  });
-};
+    this.logger.info('loading...Connecting to mongo ');
+    await connectMongo();
+    this.logger.info('Connect mongodb OPEN');
+  
+    mongoose.connection.on('disconnected', () => {
+      this.logger.warn('Connect mongodb CLOSE');
+    });
+    mongoose.connection.on('reconnectFailed', () => {
+      this.logger.fatal('Retrying to connect to mongo failed !!!!!!');
+      app.close();
+    });
+  };
 
 
 /**
  * Starts the server
  */
 app.start = async function start() {
-  this.logger.info('Starting server');
-  await app.warmup();
-  app.server.listen(process.env.port);
-};
-
-app.start()
-  .catch((err) => {
-    app.logger.fatal('Server has crashed');
-    app.logger.fatal(err);
-    process.exit(1);
-  });
-
-/**
- * Called after the server has started
- */
-app.started = function started() {
-  const {
-    address,
-    port,
-  } = this.server.address();
-  this.logger.info(`Started listening on ${address}:${port}`);
-};
-
-/**
+    this.logger.info('Starting server');
+    await app.warmup();
+    app.server.listen(port);
+  };
+  
+  app.start()
+    .catch((err) => {
+      app.logger.fatal('Server has crashed');
+      app.logger.fatal(err);
+      process.exit(1);
+    });
+  
+  /**
+   * Called after the server has started
+   */
+  app.started = function started() {
+    const {
+      address,
+    } = app.server.address();
+    this.logger.info(`Started listening on ${address}:${port}`);
+  };
+  
+  /**
  * Closes the server
  */
 app.close = async function close() {

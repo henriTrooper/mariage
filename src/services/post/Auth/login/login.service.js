@@ -33,7 +33,7 @@ async function login(req, res) {
     } else if (!user) {
       res.status(400).json({
         success: false,
-        message: 'Invalid User',
+        message: 'User does not exist',
       });
     } else if (user.hasSamePassword(password)) {
       try {
