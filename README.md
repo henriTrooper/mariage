@@ -177,6 +177,12 @@ Login d'un utilisateur, vérification de la présence de l'utilisateur en base, 
 Renvoie du token pour décrytage coté front
 
 
+## DEPLOYEMENT AWS elastick beanstalck
+ Zipper uniquement les fichiers du projets et pas le dossier
+ Modificer la connection mongoose en mongoClient ainsi que toutes les utilisation mongoose
+ Parametrer le server de Prod sur swagger : copier/coller l'adress donnée par aws SANS mettre de port.
+
+
 
 
 

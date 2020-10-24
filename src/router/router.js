@@ -59,7 +59,8 @@ const {
  * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/', async (req, res) => {
+  console.log('ici')
   await getFindAllStarted(req, res);
 });
 

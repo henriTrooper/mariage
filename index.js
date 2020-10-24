@@ -64,17 +64,6 @@ var log = function(entry) {
 
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
 
-/* URI_MONGODB="mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority"
-
-reconnectTries=10
-reconnectInterval=1000
-poolSize=20
-keepAlive=true
-useNewUrlParser=true
-useCreateIndex=true
-useFindAndModify=false
-useUnifiedTopology=true */
-
 async function connectMongo() {
   const MongoClient = require('mongodb').MongoClient;
   const uri = "mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority";
@@ -134,7 +123,7 @@ app.start = async function start() {
   app.started = function started() {
     const {
       address,
-    } = app.server.address();
+    } = this.server.address();
     this.logger.info(`Started listening on ${address}:${port}`);
   };
   

@@ -20,6 +20,7 @@ router.logger = Logger;
  * @param {*} res
  */
 async function getFindAllStarted(req, res) {
+  console.log('dans le get / ')
   await Data.find({}, (err, users) => {
     if (err) {
       res.status(400).json({

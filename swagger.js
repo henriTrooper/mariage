@@ -7,6 +7,11 @@ const updateById = require('./src/services/update/id/update.swagger');
 const register = require('./src/services/post/Auth/register/register.swagger');
 const login = require('./src/services/post/Auth/login/login.swagger');
 
+const {
+  app,
+} = require('./index');
+
+
 const swaggerDocument = {
   openapi: '3.0.1',
   info: {
@@ -29,7 +34,7 @@ const swaggerDocument = {
       description: 'LOCAL server'
     },
     {
-      url: 'https://app-dev.herokuapp.com/api/v1',
+      url: 'http://testapplication-env.eba-ymzz7z5z.us-east-1.elasticbeanstalk.com/api',
       description: 'DEV server'
     },
     {
