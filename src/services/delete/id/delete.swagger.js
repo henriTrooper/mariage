@@ -2,19 +2,19 @@ const deleteById = {
   tags: [
     'Users',
   ],
-  summary: 'Delete user with given ID',
+  summary: 'Delete data with given ID',
   description: 'Delete ID',
   operationId: 'deletebyId',
   parameters: [{
     name: 'id',
     in: 'header',
     required: true,
-    description: 'ID of user that we want to find',
+    description: 'ID of data that we want to find',
     type: 'string',
   }],
   responses: {
     200: {
-      description: 'User is deleted',
+      description: 'Data is deleted by ID',
       content: {
         'application/json': {
           schema: {
@@ -26,9 +26,14 @@ const deleteById = {
           },
         },
       },
+      links: {
+        deleteID: {
+          $ref: '#/definitions/links/deleteID',
+        },
+      },
     },
     400: {
-      description: 'Echec Delete',
+      description: 'Echec Delete by ID',
       content: {
         'application/json': {
           schema: {
@@ -36,7 +41,7 @@ const deleteById = {
           },
           example: {
             success: false,
-            message: 'Echec Delete',
+            message: 'Echec Delete by ID',
             options: 'error stack',
           },
         },

@@ -1,13 +1,5 @@
-const router = require('express').Router();
-const bodyParser = require('body-parser');
-const Data = require('../../../models/data');
-const Logger = require('../../../utils/logger');
-
-const { urlencoded, json } = bodyParser;
-
-router.use(json());
-router.use(urlencoded({ extended: true }));
-router.logger = Logger;
+const MongoClient = require('../../../Database/mongoClient')
+var ObjectId = require('mongodb').ObjectID;
 
 /** Function called in the router on the way PUT "/user/:userId"
  *
@@ -16,19 +8,8 @@ router.logger = Logger;
  */
 async function updateById(req, res) {
   const { id } = req.headers;
-  await Data.findOneAndUpdate({ _id: id }, req.body, { useFindAndModify: false }, (err, user) => {
-    if (err) {
-      res.status(400).json({
-        success: false,
-        message: 'Update Echec',
-      });
-    } else {
-      res.status(200).json({
-        success: true,
-        user,
-      });
-    }
-  });
+  const idObject = { "_id" : ObjectId(id) }
+  await MongoClient.findIDAndUpdate(idObject, req.body, res)
 }
 
 module.exports = {

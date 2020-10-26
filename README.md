@@ -44,7 +44,7 @@
         Swagger permet de sécuriser les responses envoyé du back
 
 
-## Swagger: Tuto https://medium.com/wolox/documenting-a-nodejs-rest-api-with-openapi-3-swagger-5deee9f50420
+## Open API: Tuto https://medium.com/wolox/documenting-a-nodejs-rest-api-with-openapi-3-swagger-5deee9f50420
 
     Fichier de base : swagger.js
             - Configuration de Swagger
@@ -181,6 +181,41 @@ Renvoie du token pour décrytage coté front
  Zipper uniquement les fichiers du projets et pas le dossier
  Modificer la connection mongoose en mongoClient ainsi que toutes les utilisation mongoose
  Parametrer le server de Prod sur swagger : copier/coller l'adress donnée par aws SANS mettre de port.
+ Penser à rajouter l'adress IP 0.0.0.0/0 dans la white List de Mongodb Atlas.
+
+ Modifier dans index.js les corsOption => mettre la vraie url
+ Modifier l'url dans le browser => mettre la vraie url
+
+ TODO:
+ ajouter un POST pour des insert multiple :https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/
+ ajouter un get by ID : https://docs.mongodb.com/manual/reference/method/db.collection.findOne/
+ ajouter un update many : https://docs.mongodb.com/manual/reference/method/db.collection.updateMany/
+ajouter un remove all by Param
+
+
+
+
+Genrateur de données : https://www.json-generator.com/
+
+[
+  '{{repeat(5, 7)}}',
+  {
+    isPublic: '{{bool()}}',
+    name: '{{firstName()}} {{surname()}}',
+    description: '{{lorem(1, "paragraphs")}}',
+    collegues: [
+      '{{repeat(7)}}',
+      '{{firstName()}} {{surname()}}'
+    ],
+    carriere: [
+      '{{repeat(3)}}',
+      {
+        compagnie: '{{company().toUpperCase()}}',
+        date: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd")}}'
+      }
+    ]
+  }
+]
 
 
 

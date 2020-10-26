@@ -3,7 +3,7 @@ const router = require('express').Router();
 const bodyParser = require('body-parser');
 const Logger = require('../utils/logger');
 const {
-  getFindAllStarted,
+  getStarted,
 } = require('../services/get/{started}/get.service');
 
 const {
@@ -11,7 +11,7 @@ const {
 } = require('../services/get/{user}/get.service');
 
 const {
-  save,
+  insertOne,
 } = require('../services/post/post.service');
 
 const {
@@ -19,8 +19,22 @@ const {
 } = require('../services/delete/id/delete.service');
 
 const {
+  deleteByParam,
+} = require('../services/delete/param/delete.service');
+
+const {
+  purgeDB,
+} = require('../services/delete/purge/delete.service');
+
+
+const {
   updateById,
 } = require('../services/update/id/update.service');
+
+const {
+  updateByParam,
+} = require('../services/update/param/update.service');
+
 
 const {
   register,
@@ -51,6 +65,9 @@ const {
   validateEmail,
 } = require('../utils/utils');
 
+const path = require('path')
+
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * * * * * * * * * * * ROUTAGE * * * * * * * * * * ** * * * * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -60,11 +77,11 @@ const {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/', async (req, res) => {
-  console.log('ici')
-  await getFindAllStarted(req, res);
+  //await getStarted(req, res);
+  res.sendFile(path.relative(process.cwd(),"../public/dist/regiment/index.html"))
 });
 
-router.get('/users', authMiddleware, async (req, res) => {
+router.get('/users', async (req, res) => {
   await getFindAllUser(req, res);
 });
 
@@ -72,7 +89,7 @@ router.get('/users', authMiddleware, async (req, res) => {
  * * * * * * * * * * * ROUTAGE POST  * * * * * * * * * * ** * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.post('/addUser', authMiddleware, async (req, res) => {
+router.post('/addUser', async (req, res) => {
   if (!req.body.name) {
     res.status(400).send({
       success: false,
@@ -84,7 +101,7 @@ router.post('/addUser', authMiddleware, async (req, res) => {
       message: 'isPublic is required or syntaxe incorrect',
     });
   } else {
-    await save(req, res);
+    await insertOne(req, res);
   }
 });
 
@@ -92,7 +109,7 @@ router.post('/addUser', authMiddleware, async (req, res) => {
  * * * * * * * * * * * ROUTAGE UPDATE  * * * * * * * * * * ** * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.put('/user/:userId', authMiddleware, async (req, res) => {
+router.put('/user/id/:userId', async (req, res) => {
   if (!req.body.name) {
     res.status(400).send({
       success: false,
@@ -108,11 +125,27 @@ router.put('/user/:userId', authMiddleware, async (req, res) => {
   }
 });
 
+router.put('/user/param/:param', async (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'Name is required',
+    });
+  } else if (typeof (req.body.isPublic) !== 'boolean') {
+    res.status(400).send({
+      success: false,
+      message: 'isPublic is required',
+    });
+  } else {
+    await updateByParam(req, res);
+  }
+});
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * * * * * * * * * * * ROUTAGE DELETE  * * * * * * * * * * ** * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.delete('/user/:userId', authMiddleware, async (req, res) => {
+router.delete('/user/id/:userId', async (req, res) => {
   if (!req.headers.id) {
     res.status(400).send({
       success: false,
@@ -123,11 +156,27 @@ router.delete('/user/:userId', authMiddleware, async (req, res) => {
   }
 });
 
+router.delete('/user/param/:param', async (req, res) => {
+    if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'No Param find',
+    });
+  } else {
+    await deleteByParam(req, res);
+  }
+});
+
+router.delete('/user/purgeDB', async (req, res) => {
+  await purgeDB(req, res);
+});
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * * * * * * * * * * * ROUTAGE AUTHENTIFICATION  * * * * * * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/register', async (req, res) => {
+
   if (validateEmail(req.body.email) === false) {
     res.status(400).send({
       success: false,

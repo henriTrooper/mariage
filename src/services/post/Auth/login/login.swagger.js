@@ -37,7 +37,7 @@ const login = {
       },
     },
     400: {
-      description: 'Echec Delete',
+      description: 'Echec Login',
       content: {
         'application/json': {
           schema: {
@@ -45,7 +45,7 @@ const login = {
           },
           example: {
             success: false,
-            message: 'Echec Delete',
+            message: 'Echec Login',
             options: 'error stack',
           },
         },

@@ -37,7 +37,7 @@ const register = {
       },
     },
     400: {
-      description: 'Echec Delete',
+      description: 'Echec Register',
       content: {
         'application/json': {
           schema: {
@@ -45,7 +45,7 @@ const register = {
           },
           example: {
             success: false,
-            message: 'Echec Delete',
+            message: 'Echec Register',
             options: 'error stack',
           },
         },

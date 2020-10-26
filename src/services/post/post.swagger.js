@@ -2,8 +2,8 @@ const postUser = {
   tags: [
     'Users',
   ],
-  summary: 'Create User',
-  description: 'Create new user in DB',
+  summary: 'Create Data',
+  description: 'Create new data in DB',
   operationId: 'createUsers',
   parameters: [],
   requestBody: {
@@ -18,7 +18,7 @@ const postUser = {
   },
   responses: {
     200: {
-      description: 'User is created',
+      description: 'Success Created',
       content: {
         'application/json': {
           schema: {
@@ -37,7 +37,7 @@ const postUser = {
       },
     },
     400: {
-      description: 'Echec Delete',
+      description: 'Echec Created',
       content: {
         'application/json': {
           schema: {
@@ -45,7 +45,7 @@ const postUser = {
           },
           example: {
             success: false,
-            message: 'Echec Delete',
+            message: 'Echec Created',
             options: 'error stack',
           },
         },

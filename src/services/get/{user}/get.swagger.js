@@ -2,13 +2,13 @@ const getUser = {
   tags: [
     'Users',
   ],
-  summary: 'Find users',
-  description: 'Find all users in DB',
+  summary: 'Find data',
+  description: 'Find all data in DB',
   operationId: 'FindAllUsers',
   parameters: [],
   responses: {
     200: {
-      description: 'All User Find',
+      description: 'All Data Find',
       content: {
         'application/json': {
           schema: {
@@ -27,7 +27,7 @@ const getUser = {
       },
     },
     400: {
-      description: 'Echec Delete',
+      description: 'Echec Find All Data',
       content: {
         'application/json': {
           schema: {
@@ -35,7 +35,7 @@ const getUser = {
           },
           example: {
             success: false,
-            message: 'Echec Delete',
+            message: 'Echec Find All Data',
             options: 'error stack',
           },
         },

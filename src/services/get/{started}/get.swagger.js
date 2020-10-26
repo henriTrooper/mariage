@@ -26,7 +26,7 @@ const started = {
       },
     },
     400: {
-      description: 'Echec Delete',
+      description: 'Echec Started',
       content: {
         'application/json': {
           schema: {
@@ -34,7 +34,7 @@ const started = {
           },
           example: {
             success: false,
-            message: 'Echec Delete',
+            message: 'Echec Started',
             options: 'error stack',
           },
         },

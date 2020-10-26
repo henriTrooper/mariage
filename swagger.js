@@ -1,8 +1,14 @@
 const postUser = require('./src/services/post/post.swagger');
+
 const getUser = require('./src/services/get/{user}/get.swagger');
 const getStart = require('./src/services/get/{started}/get.swagger');
+
 const deleteById = require('./src/services/delete/id/delete.swagger');
+const deleteByParam = require('./src/services/delete/param/delete.swagger');
+const purgeDB = require('./src/services/delete/purge/delete.swagger');
+
 const updateById = require('./src/services/update/id/update.swagger');
+const updateByParam = require('./src/services/update/param/update.swagger');
 
 const register = require('./src/services/post/Auth/register/register.swagger');
 const login = require('./src/services/post/Auth/login/login.swagger');
@@ -22,7 +28,7 @@ const swaggerDocument = {
     contact: {
       name: 'Mersch Henri',
       email: 'mersch.henri@icloud.com',
-      url: 'https://www.capgemini.com/'
+      url: ''
     },
     license: {
       name: 'Apache 2.0',
@@ -94,9 +100,16 @@ const swaggerDocument = {
     "/users": {
       get: getUser
     },
-    "/user/{id}": {
+    "/user/id/{id}": {
       delete: deleteById,
       put: updateById
+    },
+    "/user/param/{param}": {
+      delete: deleteByParam,
+      put: updateByParam
+    },
+    "/user/purgeDB" :{
+      delete: purgeDB
     },
     "/register": {
       post: register
@@ -188,6 +201,16 @@ const swaggerDocument = {
         }
       },
     },
+    OnceParam : {
+      required: [
+        "name",
+      ],
+      properties: {
+        name: {
+          "type": "string"
+        },
+      },
+    },
     Error: {
       type: 'object',
       properties: {
@@ -215,8 +238,24 @@ const swaggerDocument = {
         operationId: "Started",
         parameters:{}
       },
-      update: {
-        operationId: "updateUsers",
+      updateID: {
+        operationId: "updateID",
+        parameters:{}
+      },
+      updateParam: {
+        operationId: "updateParam",
+        parameters:{}
+      },
+      deleteID: {
+        operationId: "deletebyId",
+        parameters:{}
+      },
+      deleteParam: {
+        operationId: "deletebyParam",
+        parameters:{}
+      },
+      purgeDB: {
+        operationId: "purgeDB",
         parameters:{}
       },
       createProfil: {

@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken');
-const User = require('../../../../models/user');
+const User = require('../../../../Database/models/user');
+const
+  MongoClient = require('mongodb').MongoClient;
+const Logger = require('../../../../utils/logger');
+
+const uri = 'mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority';
+const bcrypt = require('bcryptjs');
+
 /**
  *  Here, you can see that we have imported the jwt package. It will help us to generate a JWT token.
  * First, we are extracting the email and Password from the request.
@@ -22,45 +29,69 @@ async function login(req, res) {
     password,
   } = req.body;
 
-  await User.findOne({
-    email,
-  }, async (err, user) => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+
+  await client.connect(err => {
     if (err) {
+      res.status(400).json({
+        success: false,
+        message: 'Fail Connected...',
+      });
+    }
+    let db = client.db('config_Base');
+    db.collection("users").findOne({"email": email})
+    .then(user => {
+      if (!user) {
+        res.status(400).json({
+          success: false,
+          message: 'User does not exist',
+        });
+      }  else if (user) {
+        bcrypt.compare( password , user.password , function ( err , result ) {
+         if(!result){
+         res.status(400).json({
+          success: false,
+          message: 'Wrong email or password',
+        });
+         } else {
+           try {
+             let admin = false
+              if(user.email === 'mersch.henri@icloud.com'){
+                admin = true
+              }
+            const jsonToken = jwt.sign({
+              userId: user._id,
+              username: user.username,
+              admin: admin
+            },
+            process.env.JWT_KEY, {
+              expiresIn: '24h',
+            });
+            res.status(200).json({
+              success: true,
+              token: jsonToken,
+            });
+          } catch (error) {
+            res.status(400).json({
+              success: false,
+              message: 'Echec generated TOKEN',
+            });
+          }
+         }
+        })
+      }
+     }).catch(err => {
+      Logger.warn(`Failed to find documents: ${err}`);
       res.status(400).json({
         success: false,
         message: 'Echec Login',
       });
-    } else if (!user) {
-      res.status(400).json({
-        success: false,
-        message: 'User does not exist',
-      });
-    } else if (user.hasSamePassword(password)) {
-      try {
-        const jsonToken = jwt.sign({
-          userId: user._id,
-          username: user.username,
-        },
-        process.env.JWT_KEY, {
-          expiresIn: '24h',
-        });
-        res.status(200).json({
-          success: true,
-          token: jsonToken,
-        });
-      } catch (error) {
-        res.status(400).json({
-          success: false,
-          message: 'Echec generated TOKEN',
-        });
-      }
-    } else {
-      res.status(400).json({
-        success: false,
-        message: 'Wrong email or password',
-      });
-    }
-  });
+    })
+  })
+  client.close();
 }
 
 module.exports = {
