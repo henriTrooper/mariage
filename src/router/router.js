@@ -41,7 +41,7 @@ const {
 } = require('../services/post/Auth/register/register.service');
 
 const {
-  login,
+  login, loginSocial
 } = require('../services/post/Auth/login/login.service');
 
 // Middlaware Auth
@@ -176,7 +176,7 @@ router.delete('/user/purgeDB', async (req, res) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/register', async (req, res) => {
-
+  req.body = req.body.userConnect
   if (validateEmail(req.body.email) === false) {
     res.status(400).send({
       success: false,
@@ -198,19 +198,18 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  if (!req.body.password) {
-    res.status(400).send({
-      success: false,
-      message: 'Password not find',
-    });
-  } else if (!req.body.email || validateEmail(req.body.email) === false) {
+  req.body = req.body.userConnect
+  if (!req.body.email || validateEmail(req.body.email) === false) {
     res.status(400).send({
       success: false,
       message: 'Email is not valid',
     });
-  } else {
-    await login(req, res);
-  }
+  } else if (!req.body.password) {
+      await loginSocial(req, res)
+    } else {
+      await login(req, res);
+    }
+  
 });
 
 // the user is not logged in, then it won’t be able to access the route and redirect to the login page in clientside based on the response.

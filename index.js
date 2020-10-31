@@ -24,6 +24,10 @@ app.set('trust proxy', 1); // trust first proxy
 
 const port = process.env.PORT || 3000;
 
+
+const url = '';
+
+
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
 
 async function connectMongo() {
@@ -55,14 +59,14 @@ app.server.on('error', (err) => app.logger.fatal(err));
 app.warmup = async function warmup() {
   this.logger.info('loading...Connecting to mongo ');
   await connectMongo();
-  
 };
 
 /**
  * Starts the server
  */
 app.start = async function start() {
-  this.logger.info('Starting server');
+
+  this.logger.info('Starting server on ', process.env.urlProd);
   await app.server.listen(port);
   await app.warmup();
 };
@@ -113,8 +117,7 @@ app.use(bodyParser.json());
 app.use(express.static(process.cwd()+"/src/public/dist/regiment/"));
 
 const corsOptions = {
-   origin: 'http://testapplication-env.eba-ymzz7z5z.us-east-1.elasticbeanstalk.com',
-  // origin: 'http://localhost:4200',
+  origin: process.env.urlProd,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 

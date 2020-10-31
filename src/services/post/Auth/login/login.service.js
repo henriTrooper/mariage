@@ -94,6 +94,73 @@ async function login(req, res) {
   client.close();
 }
 
+
+/** 
+ * @param {*} req
+ * @param {*} res
+ */
+async function loginSocial(req, res) {
+  const {
+    email,
+  } = req.body;
+
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+
+  await client.connect(err => {
+    if (err) {
+      res.status(400).json({
+        success: false,
+        message: 'Fail Connected...',
+      });
+    }
+    let db = client.db('config_Base');
+    db.collection("users").findOne({"email": email})
+    .then(user => {
+      if (!user) {
+        res.status(400).json({
+          success: false,
+          message: 'User does not exist',
+        });
+      }  else if (user) {
+           try {
+             let admin = false
+              if(user.email === 'mersch.henri@icloud.com'){
+                admin = true
+              }
+            const jsonToken = jwt.sign({
+              userId: user._id,
+              username: user.username,
+              admin: admin
+            },
+            process.env.JWT_KEY, {
+              expiresIn: '24h',
+            });
+            res.status(200).json({
+              success: true,
+              token: jsonToken,
+            });
+          } catch (error) {
+            res.status(400).json({
+              success: false,
+              message: 'Echec generated TOKEN',
+            });
+          }
+      }
+     }).catch(err => {
+      Logger.warn(`Failed to find User: ${err}`);
+      res.status(400).json({
+        success: false,
+        message: 'Echec Login',
+      });
+    })
+  })
+  client.close();
+}
+
 module.exports = {
   login,
+  loginSocial
 };
