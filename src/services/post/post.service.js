@@ -10,7 +10,6 @@ const MongoClient = require('../../Database/mongoClient')
  */
 async function insertOne(req, res) {
   const data = await new Data(req.body);
-  console.log('eeeee', data)
   await MongoClient.insertOne(data, res)
 }
 module.exports = {

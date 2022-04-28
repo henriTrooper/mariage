@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+  </ngx-spinner>
+  <p-toast></p-toast>
+
+  <div class="card">
+    <p-steps  class="stepsCustom" [model]="items" [readonly]="true"></p-steps>
+  </div>
+
+
+  <div style="margin: 30px;" class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="title">
+        <h1>Personal Information</h1>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <form style="margin-left: 40px" class="register-form" id="register-form" [formGroup]="registerForm"
+          (ngSubmit)="register()">
+          <div style="margin-top: 10px; margin-left: -40px; margin-bottom: 30px;">
+            Informations de Connection
+          </div>
+          <div style="margin-top: -2rem;" class="p-formgrid p-grid">
+
+            <!-- Email -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Email:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <input placeholder="Email" formControlName="email" class="form-control " id="email" type="email"
+                      aria-describedby="email-help" pInputText />
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="isValidInput('email')">
+                <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['email'].errors.required">
+                  <small id="email-help">Email is required.</small>
+                </div>
+                <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['email'].errors.pattern">
+                  <small id="email-help">Must be a valid email format.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Password:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <input placeholder="Password" type="password" pPassword class="form-control"
+                      formControlName="password">
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="isValidInput('password')">
+                <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['password'].errors.required">
+                  <small id="password-help">Password is required.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Confirmation -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Confirmation Password:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <input placeholder="Password Confirmation" type="password" pPassword class="form-control"
+                      formControlName="passwordConfirmation">
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="isValidInput('passwordConfirmation')">
+                <div style="color:red; font-size: 1.5em;"
+                  *ngIf="registerForm.controls['passwordConfirmation'].errors.required">
+                  <small id="password-help">Password is required.</small>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div style="margin-top: 10px; margin-left: -40px; margin-bottom: 30px;">
+            Informations du Profil
+          </div>
+          <div style="margin-top: -2rem;" class="p-formgrid p-grid">
+
+            <!-- Active -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Active:</span>
+                <div>
+                  <span  class=" form-group p-float-label">
+                    <p-dropdown [style]="{'width':'100%'}" id="isActive" formControlName="isActive"  [options]="isActive"
+                      placeholder="Activation d'un profil" optionLabel="name" [showClear]="true">
+                    </p-dropdown>
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="isValidInput('isActive')">
+                <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['isActive'].errors.required">
+                  <small id="isActive-help">Activation is required.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nom -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Nom:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <input placeholder="Nom" type="text" class="form-control"
+                      formControlName="nom">
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="isValidInput('nom')">
+                <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['nom'].errors.required">
+                  <small id="nom-help">Nom is required.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prénom -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Prénom:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <input placeholder="Prénom" type="text" class="form-control"
+                      formControlName="prenom">
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="isValidInput('prenom')">
+                <div style="color:red; font-size: 1.5em;"
+                  *ngIf="registerForm.controls['prenom'].errors.required">
+                  <small id="prenom-help">Prenom is required.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Telephone -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Téléphone:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <p-inputNumber [style]="{'width':'100%'}" inputId="integeronly" placeholder="Telephone" type="tel" formControlName="telephone">
+                    </p-inputNumber>
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="isValidInput('telephone')">
+                <div style="color:red; font-size: 1.5em;"
+                  *ngIf="registerForm.controls['telephone'].errors.required">
+                  <small id="telephone-help">Telephone is required.</small>
+                </div>
+              </div>
+            </div>
+
+             <!-- Adresse -->
+             <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Adresse:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <input placeholder="Adresse" type="text" class="form-control"
+                      formControlName="adresse">
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="isValidInput('adresse')">
+                <div style="color:red; font-size: 1.5em;"
+                  *ngIf="registerForm.controls['adresse'].errors.required">
+                  <small id="adresse-help">Adresse is required.</small>
+                </div>
+              </div>
+            </div>
+
+           <!-- Mandat -->
+           <div class="p-col-12 p-md-6 p-lg-4">
+            <div class="p-field">
+              <span style="color: black;">Mandat:</span>
+              <div>
+                <span  class=" form-group p-float-label">
+                  <p-dropdown [style]="{'width':'100%'}" id="mandat" formControlName="mandat"  [options]="mandat"
+                    placeholder="Mandat" optionLabel="name" [showClear]="true">
+                  </p-dropdown>
+                </span>
+              </div>
+            </div>
+
+            <div *ngIf="isValidInput('mandat')">
+              <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['mandat'].errors.required">
+                <small id="Mandat-help">Mandat is required.</small>
+              </div>
+            </div>
+          </div>
+
+            <!-- Prospect -->
+            <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Prospect:</span>
+                <div>
+                  <span  class=" form-group p-float-label">
+                    <p-dropdown [style]="{'width':'100%'}" id="prospect" formControlName="prospect"  [options]="prospect"
+                      placeholder="Prospect" optionLabel="name" [showClear]="true">
+                    </p-dropdown>
+                  </span>
+                </div>
+              </div>
+  
+              <div *ngIf="isValidInput('prospect')">
+                <div style="color:red; font-size: 1.5em;" *ngIf="registerForm.controls['prospect'].errors.required">
+                  <small id="Prospect-help">Prospect is required.</small>
+                </div>
+              </div>
+            </div>
+
+             <!-- Note -->
+             <div class="p-col-12 p-md-6 p-lg-4">
+              <div class="p-field">
+                <span style="color: black;">Note:</span>
+                <div>
+                  <span class=" form-group p-float-label">
+                    <textarea placeholder="Note" type="text" class="form-control"
+                    formControlName="note"
+                        rows="3" cols="20"></textarea>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <div class="p-grid p-nogutter p-justify-end">
+          <p-button label="Next" [disabled]="!registerForm.valid" type="submit" (onClick)="nextPage()"
+            icon="pi pi-angle-right" iconPos="right"></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+
+</body>
+
+</html>

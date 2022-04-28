@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+    </ngx-spinner>
+    <p-toast></p-toast>
+    
+    <div class="card">
+      <p-steps class="stepsCustom" [model]="items" [readonly]="true"></p-steps>
+    </div>
+   
+  <div style="margin: 30px;" class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="content">
+        <p-header style="width: 100%;">
+          <span style="font-size: initial;">RDV(s) {{step4Started.rdv.length}}</span>
+        </p-header>
+        <button style="float: right; margin: 5px;" pButton pRipple type="button" icon="pi pi-minus" title="Remove Column" (click)="removeColumn()"></button>
+
+        <button style="float: right; margin: 5px;" pButton pRipple type="button" icon="pi pi-plus" title="Add Column" (click)="addRdv()"
+        class="p-mr-2"></button>
+       
+         <div class="p-field" *ngFor="let rdv of step4Started.rdv;let i=index;">
+          <span style="color: blue; font-weight: bold; font-size: 15px;">RDV</span>
+
+          <div class="p-grid">
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label style="color: black;">Titre:</label>
+              <div>
+                <span class=" form-group p-float-label">
+                  <input style="width: 100%;" type="text" pInputText id="titre{{i}}" [(ngModel)]="rdv.titre" required autofocus />
+                </span>
+              </div>
+            </div>
+            
+            
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label for="description">Description</label>
+              <textarea style="width: 100%;" id="rdvDescription{{i}}" pInputTextarea [(ngModel)]="rdv.description" required rows="3"
+                cols="20"></textarea>
+            </div>
+
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label for="date">Date de début</label>
+              <div>
+                <p-calendar [(ngModel)]=" rdv.startedDate" [showTime]="true" inputId="timeStarted{{i}}"></p-calendar>
+              </div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label for="date">Date de fin</label>
+              <div >
+                <p-calendar [(ngModel)]="rdv.endDate" [showTime]="true" inputId="timeEnd{{i}}"></p-calendar>
+              </div>
+            </div>
+           
+
+        </div>
+        </div> 
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <div class="p-grid p-nogutter p-justify-between">
+          <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+          <p-button label="Next" type="submit" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right">
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+
+    
+
+</body>
+</html>

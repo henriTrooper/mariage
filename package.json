@@ -1,14 +1,15 @@
 {
-  "name": "regiment",
+  "name": "API_GENERIQUE",
   "version": "1.0.0",
-  "description": "TUTO_PERSO",
+  "description": "API_GENERIQUE",
   "main": "index.js",
   "scripts": {
     "start": "node index",
     "dev": "nodemon",
     "lint": "eslint src --fix",
     "test": "mocha --exit",
-    "sonar": "node sonar-project.js"
+    "sonar": "node sonar-project.js",
+    "deploy": "ng deploy --base-href=/mariage/"
   },
   "author": "Henri",
   "license": "MIT",
@@ -30,6 +31,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.9",
     "pino": "^5.15.0",
+    "saslprep": "^1.0.3",
     "sonarqube-scanner": "^2.7.0",
     "supertest": "^4.0.2",
     "swagger-ui-express": "^4.1.4",

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+  <title>Sidebar template</title>
+
+</head>
+
+<body id="bodySidebar">
+  <div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
+   <!--  <a id="show-sidebar" class="btn btn-sm btn-dark btnSidebar" (click)="toggleSidebar()">
+      <i class="fa fa-bars fa-3x"></i>
+    </a> -->
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-content">
+        <div class="sidebar-header">
+          <a href="/">
+            <img style="width: 100px; height: 80px; margin-left: 50px;" src="../../assets/img10.png" />
+
+          </a>
+          <div (click)="toggleSidebar()" id="close-sidebar">
+            <i class="fa fa-times-circle-o"></i>
+          </div>
+        </div>
+
+        <div *ngIf="auth.isAuthenticated()">
+          <div class="sidebar-profile">
+            <div class="user-pic">
+              <img class="img-responsive img-rounded"
+                src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                alt="User picture">
+            </div>
+            <div style="font-size: 1.5em;" class="user-info">
+
+              <span *ngIf="auth.isAdmin()" class="user-name">Welcome
+                <strong>{{auth.profilName()}}</strong>
+              </span>
+
+              <span *ngIf="!auth.isAdmin()" class="user-name">Welcome
+                <strong>{{auth.profilName()}}</strong>
+              </span>
+
+              <div *ngIf="auth.isAdmin()">
+                <span class="user-role">Administrator</span>
+              </div>
+
+              <div *ngIf="!auth.isAdmin()">
+                <span class="user-role">User</span>
+              </div>
+
+              <span class="user-status">
+                <i class="fa fa-circle"></i>
+                <span>Online</span>
+              </span>
+
+            </div>
+          </div>
+          <!-- sidebar-search  -->
+          <div *ngIf="auth.isAdmin()" class="sidebar-search">
+            <div>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input class="search-menu p-inputtext-lg" type="text" pInputText placeholder="Search"
+                  [(ngModel)]="value3" />
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="sidebar-menu">
+          <ul>
+            <li *ngFor="let menu of menus"
+              [ngClass]="{'active': menu.active , 'sidebar-dropdown':menu.type === 'dropdown' , 'header-menu':menu.type === 'header'}">
+
+
+              <div id="globalMenu" *ngIf="menu.global === 'global'">
+                <span *ngIf="menu.type === 'header'">{{menu.title}}</span>
+                <a (click)="toggleSidebar()" style="font-size: 1.5em;" routerLink={{menu.href}}
+                  routerLinkActive="active" style="cursor: pointer;" *ngIf="menu.type !== 'header'">
+                  <i class="{{menu.icon}}"></i>
+                  <span>{{menu.title}}</span>
+                </a>
+              </div>
+
+              <!-- Si un user et connecter et est un admin on aggrémente la sidebar  -->
+              <div *ngIf="auth.isAuthenticated()">
+                <div *ngIf="auth.isAdmin()">
+                  <div id="updateMarginAdmin" *ngIf="menu.user === 'admin'">
+                    <span *ngIf="menu.type === 'header'">{{menu.title}}</span>
+                    <a (click)="toggleSidebar()" style="font-size: 1.5em;" id="updateBtnAdmin" routerLink={{menu.href}} routerLinkActive="active"
+                      *ngIf="menu.type !== 'header'">
+                      <i class="{{menu.icon}}"></i>
+                      <span>{{menu.title}}</span>
+                    </a>
+                  </div>
+                </div>
+                <!-- Si un user et connecter et est un user on aggrémente la sidebar  -->
+                <div *ngIf="!auth.isAdmin()">
+                  <div id="updateMarginUser" *ngIf="menu.user === 'user'">
+                    <span *ngIf="menu.type === 'header'">{{menu.title}}</span>
+                    <a (click)="toggleSidebar()" style="font-size: 1.5em;" id="updateBtnUser" routerLink={{menu.href}} routerLinkActive="active"
+                      *ngIf="menu.type !== 'header'">
+                      <i class="{{menu.icon}}"></i>
+                      <span>{{menu.title}}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+
+        <a style="margin-left: 30px;margin-right: 50px;margin-top: 3px;" href="https://www.facebook.com"
+          target="_blank">
+          <i class="fa fa-facebook fa-2x"></i>
+
+        </a>
+        <a style="margin-top: 3px;margin-right: 30px;" href="https://www.instagram.com" target="_blank">
+          <i style="color: yellow" class="fa fa-instagram fa-2x"></i>
+        </a>
+
+
+        <div class="dropdown" dropdown>
+          <a style="margin-top: 3px" dropdownToggle>
+            <i class="fa fa-cog fa-2x"></i>
+            <span class="badge-sonar"></span>
+          </a>
+          <div class="dropdown-menu" *dropdownMenu>
+            <a class="dropdown-item" href="/profile">My profile</a>
+            <a class="dropdown-item" href="#">Help</a>
+            <a class="dropdown-item" href="#">Setting</a>
+          </div>
+        </div>
+        <div>
+          <a style="margin-top: 3px" href="#" (click)='logout()'>
+            <i class="fa fa-power-off fa-2x"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</body>
+
+</html>

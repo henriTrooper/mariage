@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+    </ngx-spinner>
+    <p-toast></p-toast>
+    
+    <div class="card">
+        <p-steps  class="stepsCustom" [model]="items" [readonly]="true"></p-steps>
+    </div>
+
+    <div style="margin: 30px;" class="stepsdemo-content">
+      <p-card>
+        <ng-template pTemplate="title">
+          <h1>Documents PDF</h1>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <p-fileUpload customUpload="true" (uploadHandler)="onUpload($event)" multiple="multiple"
+                        chooseLabel="Choix du fichier" accept="application/pdf">
+                        <ng-template pTemplate="content">
+                          <ul *ngIf="step2Started.document.length">
+                              <li *ngFor="let document of step2Started.document">{{document.titre}} - {{document.date}}
+                              </li>
+                          </ul>
+                      </ng-template>
+            </p-fileUpload>
+        </ng-template>
+  
+        <ng-template pTemplate="footer">
+          <div class="p-grid p-nogutter p-justify-between">
+            <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Next" type="submit" (onClick)="nextPage()"
+              icon="pi pi-angle-right" iconPos="right"></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    
+
+</body>
+</html>

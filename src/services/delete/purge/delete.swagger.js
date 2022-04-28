@@ -1,6 +1,6 @@
 const purgeDB = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
   summary: 'Purge Database',
   description: 'Purge Database',

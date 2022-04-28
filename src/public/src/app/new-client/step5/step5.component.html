@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+    </ngx-spinner>
+    <p-toast></p-toast>
+    
+    <div  class="card">
+        <p-steps class="stepsCustom" [model]="items" [readonly]="true"></p-steps>
+    </div>
+
+
+  <div style="margin: 30px;" class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="content">
+        <p-header style="width: 100%;">
+          <span style="font-size: initial;">Confirmation</span>
+        </p-header>
+       
+         <div style="margin-left: 40px" class="p-field">
+          <div class="p-grid">
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Nom:</label>
+                <div class="box">{{step5Started.nom}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Prénom:</label>
+              <div class="box">{{step5Started.prenom}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Compte Activé:</label>
+              <div class="box">{{step5Started.isActive}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Mandat:</label>
+              <div class="box">{{step5Started.mandat}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Prospect:</label>
+              <div class="box">{{step5Started.prospect}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Email:</label>
+              <div class="box">{{step5Started.email}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Telephone:</label>
+              <div class="box">{{step5Started.telephone}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Adresse:</label>
+              <div class="box">{{step5Started.adresse}}</div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label>Note:</label>
+              <div class="box">{{step5Started.note}}</div>
+            </div>
+            <div *ngFor="let document of step5Started.document; let i=index;" class="p-col-12 p-md-6 p-lg-3">
+              <h3>Document(s) {{i + 1}} </h3>
+              <label>Titre:</label>
+              <div class="box">{{document.titre}}</div>
+              <label>Date:</label>
+              <div class="box">{{document.date}}</div>
+            </div>
+            <div *ngFor="let rdv of step5Started.rdv; let i=index;" class="p-col-12 p-md-6 p-lg-3">
+              <h3>RDV(s)  {{i + 1}}</h3>
+              <label>Titre:</label>
+              <div class="box">{{rdv.titre}}</div>
+              <label>Description:</label>
+              <div class="box">{{rdv.description}}</div>
+              <label>Date de début:</label>
+              <div class="box">{{rdv.startedDate}}</div>
+              <label>Date de fin:</label>
+              <div class="box">{{rdv.endDate}}</div>
+            </div>
+            <div *ngFor="let bien of step5Started.bien;let i=index;" class="p-col-12 p-md-6 p-lg-3">
+              <h3>Bien(s) {{i + 1}}</h3>
+              <label>Nom:</label>
+              <div class="box">{{bien.nom}}</div>
+              <label>Type:</label>
+              <div class="box">{{bien.mode}}</div>
+              <label>Description:</label>
+              <div class="box">{{bien.description}}</div>
+              <label>Matterport:</label>
+              <div class="box">{{bien.lien}}</div>
+                <label>Payer:</label>
+                <div class="box">{{bien.tarif.payer}}</div>
+                <label>Non Payer:</label>
+                <div class="box">{{bien.tarif.nonPayer}}</div>
+                <label>Date:</label>
+                <div class="box">{{bien.tarif.date}}</div>
+              
+            </div>
+        </div>
+        </div> 
+      </ng-template>
+
+      <p-dialog header="Header" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0">Confirmer la création du nouveau client {{step5Started.nom}} {{step5Started.prenom}}?</p>
+              <ng-template pTemplate="footer">
+              <p-button icon="pi pi-check" (click)="register()" label="Yes" styleClass="p-button-text"></p-button>
+              </ng-template>
+      </p-dialog>
+
+      <ng-template pTemplate="footer">
+        <div class="p-grid p-nogutter p-justify-between">
+          <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+          <p-button label="confirmation" type="submit" (onClick)="showModalDialog()" icon="pi pi-angle-right" iconPos="right">
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+
+
+
+  
+
+</body>
+</html>

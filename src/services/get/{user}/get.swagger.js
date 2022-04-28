@@ -1,8 +1,8 @@
 const getUser = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
-  summary: 'Find data',
+  summary: 'Find All data',
   description: 'Find all data in DB',
   operationId: 'FindAllUsers',
   parameters: [],

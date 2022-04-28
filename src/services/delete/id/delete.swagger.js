@@ -1,6 +1,6 @@
 const deleteById = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
   summary: 'Delete data with given ID',
   description: 'Delete ID',

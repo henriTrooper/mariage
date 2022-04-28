@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>  
+
+</head>
+
+<body>
+    <section id="contact">
+
+        <h1 class="section-header"></h1>
+
+        <div class="contact-wrapper">
+
+             <form  class="contact-form form-horizontal" id="contact-form" [formGroup]="contactForm" (ngSubmit)="login()">
+
+                <div  class="form-group">
+                    <div  class="col-sm-12">
+                        <input style="font-size: 1.5em" type="text" class="form-control" formControlName="name" id="name" placeholder="Name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input style="font-size: 1.5em" type="email" class="form-control" formControlName="emailContact" id="email" placeholder="Email">
+                    </div>
+                </div>
+
+                <textarea style="font-size: 1.5em" class="form-control" rows="10" formControlName="text" placeholder="Message"></textarea>
+
+
+                  <button class="btnContact" [disabled]="!contactForm.valid"  id="submit" type="submit">
+                    <span style="font-size: 1.5em">SEND</span>
+                  </button>
+
+            </form>
+
+            <!---------------- 
+      
+            CONTACT PAGE RIGHT 
+          
+            ----------------->
+
+            <div class="direct-contact-container">
+
+                <ul class="contact-list">
+                    <li class="list-item"><i class="fa fa-map-marker fa-2x"><span class="contact-text place">Toulouse |
+                                France</span></i></li>
+
+                    <li class="list-item"><i class="fa fa-phone fa-2x"><span class="contact-text phone"><a
+                                    href="tel:1-212-555-5555" title="Give me a call">(212) 555-2368</a></span></i></li>
+
+                    <li class="list-item"><i class="fa fa-envelope fa-2x"><span class="contact-text gmail"><a
+                                    href="mailto:#" title="Send me an email">mhicity31@gmail.com</a></span></i></li>
+
+                                    <ul class="social-icons">
+                                        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                                    </ul>
+                </ul>
+
+                <hr>
+             
+              
+                   
+              
+       
+                <!-- <ul class="social-media-list">
+                    <li><a href="#" target="_blank" class="contact-icon">
+                        <i class="fa fa-facebook"></i></a>
+                    </li>
+                    <li><a href="#" target="_blank" class="contact-icon">
+                            <i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    </li>
+                    <li><a href="#" target="_blank" class="contact-icon">
+                            <i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                    
+                </ul> -->
+                <hr>
+
+
+            </div>
+
+        </div>
+
+    </section>
+</body>
+
+</html>

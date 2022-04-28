@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body id="myId">
+
+  <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+    <!--     <p><b>Loading...</b></p>
+ -->
+  </ngx-spinner>
+  <p-toast></p-toast>
+
+  <section>
+    <div class="signform">
+      <div class="left">
+        <div style="font-size: 1.5em;" class="bts">
+          <a (click)="signInWithFB()" class="fblogin social"><i class="fa fa-facebook"></i><span>Sign in
+              Facebook</span></a>
+          <a class="twlogin social"><i class="fa fa-twitter"></i><span>Sign in Twitter</span></a>
+          <a (click)="signInWithGoogle()" class="gplogin social"><i class="fa fa-google-plus"></i><span>Sign in
+              Google</span></a>
+        </div>
+      </div>
+      <div class="right">
+        <div class="form">
+          <form style="margin-left: 40px" class="login-form" id="login-form" [formGroup]="loginForm"
+            (ngSubmit)="login()">
+            <div class="p-field">
+              <span style="color: white; font-size: 1.5em;">Email:</span>
+              <div>
+                <span class=" form-group p-float-label">
+                  <input placeholder="Email" formControlName="email" class="form-control " id="email" type="email"
+                    aria-describedby="email-help" pInputText />
+                </span>
+              </div>
+            </div>
+
+            <div *ngIf="isValidInput('email')">
+              <div style="color:red; font-size: 1.5em;" *ngIf="loginForm.controls['email'].errors.required">
+                <small id="email-help">Email is required.</small>
+              </div>
+              <div style="color:red; font-size: 1.5em;" *ngIf="loginForm.controls['email'].errors.pattern">
+                <small id="email-help">Must be a valid email format.</small>
+              </div>
+            </div>
+
+            <div class="p-field">
+              <span style="color: white; font-size: 1.5em;">Password:</span>
+              <div>
+                <span class=" form-group p-float-label">
+                  <input placeholder="Password" type="password" pPassword class="form-control"
+                    formControlName="password">
+                </span>
+              </div>
+            </div>
+
+            <div *ngIf="isValidInput('password')">
+              <div style="color:red; font-size: 1.5em;" *ngIf="loginForm.controls['password'].errors.required">
+                <small id="password-help">Password is required.</small>
+              </div>
+            </div>
+
+            <button [disabled]="!loginForm.valid" type="submit" class="button">
+              <span class="submit">Se connecter</span>
+              <span class="loading"><i class="fa fa-refresh"></i></span>
+              <span class="check"><i class="fa fa-check"></i></span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+</html>

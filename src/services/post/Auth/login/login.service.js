@@ -4,7 +4,6 @@ const
   MongoClient = require('mongodb').MongoClient;
 const Logger = require('../../../../utils/logger');
 
-const uri = 'mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority';
 const bcrypt = require('bcryptjs');
 
 /**
@@ -29,7 +28,7 @@ async function login(req, res) {
     password,
   } = req.body;
 
-  const client = new MongoClient(uri, {
+  const client = new MongoClient(process.env.URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
@@ -41,8 +40,8 @@ async function login(req, res) {
         message: 'Fail Connected...',
       });
     }
-    let db = client.db('config_Base');
-    db.collection("users").findOne({"email": email})
+    let db = client.db(process.env.DATABASE);
+    db.collection(process.env.COLLECTION_CREDENTIALS).findOne({"email": email})
     .then(user => {
       if (!user) {
         res.status(400).json({
@@ -116,8 +115,8 @@ async function loginSocial(req, res) {
         message: 'Fail Connected...',
       });
     }
-    let db = client.db('config_Base');
-    db.collection("users").findOne({"email": email})
+    let db = client.db(process.env.DATABASE);
+    db.collection(process.env.COLLECTION_CREDENTIALS).findOne({"email": email})
     .then(user => {
       if (!user) {
         res.status(400).json({

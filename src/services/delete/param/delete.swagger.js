@@ -1,6 +1,6 @@
 const deleteByParam = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
   summary: 'Delete data with given Param',
   description: 'Delete by Param',

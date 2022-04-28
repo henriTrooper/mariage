@@ -24,15 +24,10 @@ app.set('trust proxy', 1); // trust first proxy
 
 const port = process.env.PORT || 3000;
 
-
-const url = '';
-
-
 // ------------------------------------Connection MONGODB-------------------------------------------------------------------
 
 async function connectMongo() {
-  const uri = 'mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority';
-  const client = new MongoClient(uri, {
+  const client = new MongoClient(process.env.URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -40,11 +35,22 @@ async function connectMongo() {
     if (err) {
       Logger.warn('Failed Connected');
     }
-    client.db('config_Base').collection('datas');
-    Logger.info('Connect mongodb OPEN');
-    // perform actions on the collection object
+    connecting = { 
+      connectionStart: true,
+      date: new Date()
+    }
+    client.db(process.env.DATABASE).collection(process.env.COLLECTION_LOG).insertOne(connecting, (err, data) => {
+      if (err) {
+        Logger.warn('ECHEC mongodb');
+      } else if (!data) {
+        Logger.warn('ECHEC mongodb');
+      } else if (data) {
+        Logger.info('Connect mongodb OPEN');
+        client.close();
+      }
   });
-  client.close();
+  });
+  
 }
 
 // ------------------------------------Mise en route du server-------------------------------------------------------------------
@@ -66,7 +72,7 @@ app.warmup = async function warmup() {
  */
 app.start = async function start() {
 
-  this.logger.info('Starting server on ', process.env.urlProd);
+  this.logger.info('Starting server on ', process.env.urlDev);
   await app.server.listen(port);
   await app.warmup();
 };
@@ -114,10 +120,10 @@ app.use(bodyParser.urlencoded({
 
 // parse application/json
 app.use(bodyParser.json());
-app.use(express.static(process.cwd()+"/src/public/dist/regiment/"));
+app.use(express.static(process.cwd()+"/src/public/dist/FrontMhicity/"));
 
 const corsOptions = {
-  origin: process.env.urlProd,
+  origin: process.env.urlDev,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 

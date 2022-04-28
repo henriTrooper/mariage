@@ -1,6 +1,6 @@
 const updateByParam = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
   summary: 'Update data by Param',
   description: 'Update data in DB by Param',

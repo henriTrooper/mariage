@@ -1,6 +1,6 @@
 const updateById = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
   summary: 'Update Data by ID',
   description: 'Update data in DB by ID',

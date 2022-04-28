@@ -6,7 +6,6 @@ const Logger = require('../../../../utils/logger');
 const bcrypt = require('bcryptjs');
 
 
-const uri = 'mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority';
 
 /**
  * In this code, first, we have extracted username, email, Password, and passwordConfirmation from req.body.
@@ -27,7 +26,7 @@ async function register(req, res) {
     password,
   } = req.body;
 
-  const client = new MongoClient(uri, {
+  const client = new MongoClient(process.env.URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
@@ -38,8 +37,8 @@ async function register(req, res) {
         message: 'Fail Connected...',
       });
     }
-    let db = client.db('config_Base');
-     db.collection("users").findOne({"email": email})
+    let db = client.db(process.env.DATABASE);
+     db.collection(process.env.COLLECTION_CREDENTIALS).findOne({"email": email})
      .then(data => {
       if (data !== null) {
         res.status(400).json({
@@ -68,7 +67,7 @@ async function register(req, res) {
                 });
               } else {
                  user.password = hash;
-                 db.collection("users").insertOne(user, (error, profilsave) => {
+                 db.collection(process.env.COLLECTION_CREDENTIALS).insertOne(user, (error, profilsave) => {
                   if (error) {
                     res.status(400).json({
                       success: false,

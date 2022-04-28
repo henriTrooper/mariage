@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil</title>
+
+</head>
+
+<body>
+  <div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
+    <div class="page-content">
+
+      <div class="bodyCarousel">
+        <div id="drag-container" style="margin-top: 100px;">
+          <div id="spin-container">
+            <!-- Add your images (or video) here -->
+            <img id="img1"
+              src="https://static.cotemaison.fr/medias_10581/w_400%2Ch_600%2Cc_fill%2Cg_north/salon-dans-appartement-ancien-atelier-sous-verriere-tapis-graphique_5417767.jpg"
+              alt="">
+            <img id="img2" src="https://pbs.twimg.com/media/D_TJPEAWsAAMXJy.jpg" alt="">
+            <img id="img3"
+              src="https://static.cotemaison.fr/medias_10581/w_640,c_fill,g_north/appartement-familial-a-paris_5417765.jpg"
+              alt="">
+            <img id="img4"
+              src="https://designmag.fr/wp-content/uploads/2016/03/amenagement-interieur-de-petit-appartement-decoration-interieur-moderne.jpg"
+              alt="">
+            <img id="img5" src="https://i.pinimg.com/564x/d3/be/b1/d3beb1b1edf0e3c2cacd324e556e3859.jpg" alt="">
+            <img id="img6" src="https://meilleurscanapes.info/wp-content/uploads/2019/12/idee-deco.jpg" alt="">
+
+            <!-- Text at center of ground -->
+            <!-- <p></p>  PERMET DE METTRE UNE IMAGE EN DESSSOUS A NE PAS DELETE-->
+          </div>
+          <div id="ground"></div>
+        </div>
+      </div>
+
+
+      <!-- Text du Début -->
+      <div class="linear">
+        <!--  <div class="p-grid">
+          <div class="p-col-12 p-md-6 p-lg-3">
+            <div class="box box1">
+              <h1> Vous êtes propriétaire d'un appartement sur Toulouse?</h1>
+              <h3>On va louer votre logement et l'exploiter de facon saisonniere pour notre clientele professionelle et touristique et payer l'intégralité de votre loyer. Tous les mois sans contrepartit ! </h3>
+             <div class="li">
+              M’hi City est le résultat d’une aventure familiale qui repose sur un ensemble de valeurs fondatrices, représentant notre identité. 
+              Spécialisés dans l’immobilier et la conciergerie, nous sommes disponibles et à votre écoute pour vous fournir des prestations de qualité. 
+              Découvrez nos activités à travers les différentes rubriques.
+              
+             </div>
+               <ul>
+                <li>Totalement Gratuit ! Sans honoraire et sans frais de gestion </li>
+                <li>Nous vous payons le loyer ainsi que les charges, le 1er du mois</li>
+                <li> Nous vous garantissons le payement du loyer tout au logn de l'année</li>
+                <li>Aucun engagement, vous avez la possiblité de récupérer votre bien quand bon vous semble</li>
+                <li>Nous vous garantissons un entretien irréprochable</li>
+            </ul> 
+            <div style="    margin-top: 30px; margin-bottom: 30px;">
+              <p-button label="Prendre RDV" icon="fa fa-envelope" iconPos="right" class="btnTls"
+              styleClass="p-button-lg"></p-button>
+              <p-button label="Contactez-nous" icon="fa fa-envelope" iconPos="right" class="btnTls"
+              styleClass="p-button-lg "></p-button>
+            </div>
+            </div>
+        </div>
+        <div class="p-col-12 p-md-6 p-lg-3">
+            <div class="box">
+                <img class="imgTls stylingRight" src="https://portail-scpi.fr/wp-content/uploads/2018/03/SCPI-%C3%A0-Toulouse-image.jpg"
+              id="0" alt="img-1">
+            </div>
+        </div>
+        </div>
+ -->
+        <!--  <h2 class="section-title fixed-bg">
+          <div style="color: white; font-size: 7rem; margin: 60px;">Nos Services</div></h2>
+ -->
+        <!-- <div class="p-d-flex p-flex-column p-flex-md-row p-jc-center flexBoxDouble">
+          <div class="p-mb-2  marginCustomFlex">
+            <div class="titreCircle">Immoblier 3D</div>
+            <img class=" circleImg" src="https://www.drone-malin.com/medias/images/photo-drone-mavic-pro-de-dji.jpg"
+              id="0" alt="img-1">
+            <div style="color: black; max-width: 500px;" class="p-m-0 mediaMargin">
+              <div class="firstdivCircle">
+                Gestion totale GARANTIE de votre bien :
+              </div>
+              <div class="textCircle">
+                Loyer payé
+              </div>
+              <div class="textCircle">
+                Entretien
+              </div>
+              <div class="textCircle">
+                Valeur ajoutée
+              </div>
+            </div>
+            <div class="svg-wrapper">
+              <svg [attr.height]="40" [attr.width]="150">
+                <rect id="shape" height="40" width="150" />
+              </svg>
+              <div id="text">
+                <a [routerLink]="['/immobilier']" routerLinkActive="active">
+                  <div class="spot"></div>En savoir plus
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-mb-2 marginCustomFlex2">
+            <div class="titreCircle">Conciergerie</div>
+            <img class=" circleImg"
+              src="https://www.challenges.fr/assets/img/2018/10/15/cover-r4x3w1000-5bc46188d1ce0-shutterstock-122038180.jpg"
+              id="0" alt="img-1">
+            <div style="color: black; max-width: 500px;" class="p-m-0 mediaMargin">
+              <div class="firstdivCircle">
+                Gestion totale GARANTIE de votre bien:
+              </div>
+              <div class="textCircle">
+                Loyer payé
+              </div>
+              <div class="textCircle">
+                Entretien
+              </div>
+              <div class="textCircle">
+                Valeur ajoutée
+              </div>
+            </div>
+
+            <div class="svg-wrapper">
+              <svg [attr.height]="40" [attr.width]="150">
+                <rect id="shape" height="40" width="150" />
+              </svg>
+              <div id="text">
+                <a [routerLink]="['/conciergerie']" routerLinkActive="active">
+                  <div class="spot"></div>En savoir plus
+                </a>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="background">
+        <div class="transbox">
+          <p> NOS SERVICES</p>
+        </div>
+      </div>
+      <div style="background-color: #F6F5F4;">
+        <app-service-client></app-service-client>
+      </div>
+
+
+
+      <!--  Presentation -->
+      <!--  <div class="background">
+        <div class="transbox">
+          <p> VALEURS</p>
+        </div>
+      </div> -->
+      <!--  <app-presentation></app-presentation> -->
+
+      <!--  Commentaires -->
+      <div style="margin-top: 120px;" class="background">
+        <div class="transbox">
+          <p> Les Avis Clients</p>
+        </div>
+      </div>
+      <app-feedback></app-feedback>
+
+      <!--  NEWSLETTER -->
+      <!--  <app-news-letter></app-news-letter>
+
+ -->
+
+ <div style="margin-bottom: 60px;" class="background">
+  <div class="transbox">
+    <p> Des Questions?</p>
+    <a style="text-align: center;" [routerLink]="['/contact']"
+        routerLinkActive="router-link-active" class="btn btn-primary ">Nous contacter</a>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+  <footer>
+    <app-footer></app-footer>
+   <!--  <div class="firstFooter2">
+      <div class="p-grid">
+        <div class="p-col-fixed imgFooter">
+          <img routerLink="/" routerLinkActive="active" class="imgHeader2 " src="../../assets/img8.jpg" />
+        </div>
+        <div class="p-col-fixed customColFixed">
+          <ul>
+            Plan du Site
+            <li>
+              <a style="cursor: pointer;" [routerLink]="['/']" routerLinkActive="router-link-active">Accueil</a>
+            </li>
+            <li>
+              <a style="cursor: pointer;" [routerLink]="['/virtuel']" routerLinkActive="router-link-active">Visite Virtuel</a>
+            </li>
+            <li>
+              <a style="cursor: pointer;" [routerLink]="['/immobilier']" routerLinkActive="router-link-active">Immobilier</a>
+            </li>
+            <li>
+              <a style="cursor: pointer;" [routerLink]="['/conciergerie']" routerLinkActive="router-link-active">Conciergerie</a>
+            </li>
+            <li>
+              A propos
+            </li>
+            <li>
+              <a style="cursor: pointer;" [routerLink]="['/contact']" routerLinkActive="router-link-active">Contact</a>
+            </li>
+            <li>
+              <a style="cursor: pointer;" [routerLink]="['/auth/login']" routerLinkActive="router-link-active">Mon espace</a>
+            </li>
+          </ul>
+        </div>
+        <div class="p-col-fixed customColFixed">
+          <ul style="list-style: none">
+            Contact
+            <li>
+              <i class="fa fa-phone" aria-hidden="true"></i> Tel:
+            </li>
+            <li>
+              <i class="fa fa-envelope" aria-hidden="true"></i> Mail:
+            </li>
+            <li>
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Adresse:
+            </li>
+            <li>
+              <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>  
+              <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div style="background-color: #324866; height: 50px">
+      <span style="float:right">Copyright © 2020 M'Hicity Corp. Tous droits réservés. SIREN: ******* </span>
+      <span style="color: white">Engagement de confidentialité | Conditions d’utilisation| Mentions légales</span>
+    </div> -->
+
+  </footer>
+
+</body>
+
+</html>

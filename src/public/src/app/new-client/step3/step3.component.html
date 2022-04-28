@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+  </ngx-spinner>
+  <p-toast></p-toast>
+
+  <div style="margin: 30px;" class="card">
+    <p-steps class="stepsCustom" [model]="items" [readonly]="true"></p-steps>
+  </div>
+
+
+  <div class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="content">
+        <p-header style="width: 100%;">
+          <span style="font-size: initial;">Bien(s) {{step3Started.bien.length}}</span>
+        </p-header>
+        <button style="float: right; margin: 5px;" pButton pRipple type="button" icon="pi pi-minus" title="Remove Column" (click)="removeBien()"></button>
+
+        <button style="float: right; margin: 5px;" pButton pRipple type="button" icon="pi pi-plus" title="Add Column" (click)="addBien()"
+        class="p-mr-2"></button>
+
+        <div class="p-field" *ngFor="let bien of step3Started.bien;let i=index;">
+          <span style="color: blue; font-weight: bold; font-size: 15px;">Bien</span>
+
+
+          <div class="p-grid">
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <span style="color: black;">Nom:</span>
+              <div>
+                <span class=" form-group p-float-label">
+                  <input style="width: 100%;" type="text" pInputText id="nom{{i}}" [(ngModel)]="bien.nom" required autofocus />
+                </span>
+              </div>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3" style="margin-top: 20px; margin-right: 20px;">
+              <span style="color: black; margin-left: 100px;">Maison:</span>
+                <p-radioButton id="maison1" name="maison" value="maison" [(ngModel)]="bien.model">
+                </p-radioButton>
+              <span style="color: black; margin-left: 20px;">Appartement:</span>
+                <p-radioButton id="appartement2" name="appartement" value="appartement" [(ngModel)]="bien.model">
+                </p-radioButton>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label for="matterport">Lien Matterport</label>
+              <input style="width: 100%;" type="text" pInputText id="matterport{{i}}" [(ngModel)]="bien.lien" required autofocus />
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-3">
+              <label for="description">Description</label>
+              <textarea style="width: 100%;" id="bienDescription{{i}}" pInputTextarea [(ngModel)]="bien.description" required rows="3"
+                cols="20"></textarea>
+            </div>
+            <div style="margin-top: 20px;" class="p-col-12 p-md-6 p-lg-3">
+              <label for="horizontalPayer{{i}}">Payer</label>
+              <div>
+                <p-inputNumber [(ngModel)]="bien.tarif.payer" [showButtons]="true" buttonLayout="horizontal"
+                inputId="horizontalPayer{{i}}" spinnerMode="horizontal" [step]="1"
+                decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
+                incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" mode="currency" currency="EUR">
+              </p-inputNumber>
+              </div>
+            </div>
+            <div  style="margin-top: 20px;" class="p-col-12 p-md-6 p-lg-3">
+              <label for="horizontalNonPayer{{i}}">Non Payer</label>
+              <div>
+                <p-inputNumber [(ngModel)]="bien.tarif.nonPayer" [showButtons]="true" buttonLayout="horizontal"
+                inputId="horizontalNonPayer{{i}}" spinnerMode="horizontal" [step]="1"
+                decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
+                incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" mode="currency" currency="EUR">
+              </p-inputNumber>
+              </div>
+          </div>
+        </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <div class="p-grid p-nogutter p-justify-between">
+          <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+          <p-button label="Next" type="submit" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right">
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body class=" linear" >
+    <section class="marginCustom">
+        <div class="customer-feedback">
+            <div class="container text-center">
+                <div class="row marginCustom2">
+                    <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
+                        <div class="owl-carousel feedback-slider">
+    
+                            <!-- slider item -->
+                            <div class="feedback-slider-item">
+                                <img  src="//c2.staticflickr.com/8/7310/buddyicons/24846422@N06_r.jpg" class="center-block img-circle resizeImg" alt="Customer Feedback">
+                                <h3 class="customer-name">Lisa Redfern</h3>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. It is a long established fact that a reader will be distracted by the readable its layout.</p>
+                                <span class="light-bg customer-rating" data-rating="5">
+                                    5
+                                    <i  class="fa fa-star"></i>
+                                </span>
+                            </div>
+                            <!-- /slider item -->
+    
+                            <!-- slider item -->
+                            <div class="feedback-slider-item">
+                                <img  src="https://res.cloudinary.com/hnmqik4yn/image/upload/c_fill,fl_force_strip,h_128,q_100,w_128/v1493982718/ah57hnfnwxkmsciwivve.jpg" class="center-block img-circle resizeImg" alt="Customer Feedback">
+                                <h3 class="customer-name">Cassi</h3>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. It is a long established fact that a reader will be distracted by the readable its layout.</p>
+                                <span class="light-bg customer-rating" data-rating="4">
+                                    4
+                                    <i  class="fa fa-star"></i>
+                                </span>
+                            </div>
+                            <!-- /slider item -->
+    
+                            <!-- slider item -->
+                            <div class="feedback-slider-item">
+                                <img  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/451270/profile/profile-80.jpg" class="center-block img-circle resizeImg" alt="Customer Feedback">
+                                <h3 class="customer-name">Md Nahidul</h3>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. It is a long established fact that a reader will be distracted by the readable its layout.</p>
+                                <span class="light-bg customer-rating" data-rating="5">
+                                    5
+                                    <i  class="fa fa-star"></i>
+                                </span>
+                            </div>
+                            <!-- /slider item -->
+                            
+                        </div><!-- /End feedback-slider -->
+    
+                        <!-- side thumbnail -->
+                        <div class="feedback-slider-thumb hidden-xs">
+                            <div class="thumb-prev">
+                                <span>
+                                    <img class="resizeImgThumbail" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/451270/profile/profile-80.jpg" alt="Customer Feedback">
+                                </span>
+                                <span class="light-bg customer-rating">
+                                    5
+                                    <i  class="fa fa-star"></i>
+                                </span>
+                            </div>
+    
+                            <div class="thumb-next">
+                                <span>
+                                    <img class="resizeImgThumbail"  src="https://res.cloudinary.com/hnmqik4yn/image/upload/c_fill,fl_force_strip,h_128,q_100,w_128/v1493982718/ah57hnfnwxkmsciwivve.jpg" alt="Customer Feedback">
+                                </span>
+                                <span class="light-bg customer-rating">
+                                    4
+                                    <i  class="fa fa-star"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- /side thumbnail -->
+    
+                    </div><!-- /End col -->
+                </div><!-- /End row -->
+            </div><!-- /End container -->
+            
+        </div><!-- /End customer-feedback -->
+        <div style=" height: 120px;text-align: center;">
+            <p-button (click)="showPositionDialog('bottom')" icon="pi pi-comments" label="Laisser un commentaire" ></p-button>
+        </div>
+        
+
+        
+    </section>
+    <p-dialog header="Godfather I" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [maximizable]="true">
+    <p>The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
+        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
+        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family,
+        kind and benevolent to those who give respect,
+        but given to ruthless violence whenever anything stands against the good of the family.</p>
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="displayPosition=false" label="Yes" styleClass="p-button-text"></p-button>
+        </ng-template>
+</p-dialog>
+
+
+</body>
+</html>
+   

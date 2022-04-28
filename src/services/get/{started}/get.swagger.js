@@ -1,8 +1,8 @@
 const started = {
   tags: [
-    'Users',
+    'Other',
   ],
-  summary: 'Started Road',
+  summary: 'Started Road JWT NO mandatory',
   description: 'Get started',
   operationId: 'getStarted',
   parameters: [],

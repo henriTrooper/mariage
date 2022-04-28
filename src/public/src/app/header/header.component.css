@@ -1,0 +1,407 @@
+/*********************** Burger */
+
+/* Image */
+
+.imgHeader {
+  cursor: pointer;
+  width: 60px;
+}
+
+/*********************** Button */
+
+.page-wrapper .page-contentHeader {
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.socialMultiButoon {
+  visibility: visible;
+}
+
+.position {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-top: 15%;
+}
+
+#workarea {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  font-family: Raleway;
+}
+
+#personal {
+  color: white;
+  text-decoration: none;
+  position: absolute;
+  bottom: 15px;
+  right: 2%;
+}
+
+.spot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.svg-wrapper {
+  margin-top: 0;
+  position: relative;
+  width: 150px;
+  /*make sure to use same height/width as in the html*/
+  height: 40px;
+  display: inline-block;
+  border-radius: 3px;
+}
+
+#shape {
+  stroke-width: 3px;
+  fill: transparent;
+  stroke: white;
+  stroke-dasharray: 85 400;
+  stroke-dashoffset: -220;
+  transition: 1s all ease;
+}
+
+#text {
+  margin-top: -35px;
+  text-align: center;
+}
+
+#text a {
+  color: black;
+  text-decoration: none;
+  font-size: 1.5em;
+}
+
+.svg-wrapper:hover #shape {
+  stroke-dasharray: 50 0;
+  stroke-width: 3px;
+  stroke-dashoffset: 0;
+  stroke: black;
+}
+
+.btnSidebar {
+  visibility: hidden;
+}
+
+.imgHeader2 {
+  display: none;
+}
+
+.menu2 {
+  z-index: 999;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+@media screen and (max-width: 1000px) {
+  .menuButtons {
+    visibility: hidden;
+    height: 70px;
+  }
+  .imgHeader2 {
+    display: inherit;
+    cursor: pointer;
+    width: 80px;
+  }
+  .page-wrapper {
+    height: 80px;
+  }
+  .btnSidebar {
+    visibility: visible !important;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .imgHeader2 {
+    width: 48px;
+  }
+  .fa-3x {
+    font-size: 2em;
+  }
+  .tel {
+    margin-left: 10% !important;
+    font-size: 1rem !important;
+    color: white !important;
+    margin-right: 10% !important;
+  }
+  .mail {
+    font-size: 1rem !important;
+    color: white !important;
+  }
+}
+
+.tel {
+  margin-left: 30%;
+  font-size: 1.5rem;
+  color: white;
+  margin-right: 10%;
+}
+
+.mail {
+  font-size: 1.5rem;
+  color: white;
+}
+
+/* Button social responsive */
+
+.menu1 {
+  z-index: 999;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.menu1 .share:hover.bottom .submenu li:nth-child(1) {
+  opacity: 1;
+  top: 50px;
+  transform: rotate(0deg);
+  transition-delay: 0.08s;
+}
+
+.menu1 .share:hover.bottom .submenu li:nth-child(2) {
+  opacity: 1;
+  top: 100px;
+  transform: rotate(0deg);
+  transition-delay: 0.16s;
+}
+
+.menu1 .share:hover.bottom .submenu li:nth-child(3) {
+  opacity: 1;
+  top: 150px;
+  transform: rotate(0deg);
+  transition-delay: 0.24s;
+}
+
+.menu1 .share:hover.bottom .submenu li:nth-child(4) {
+  opacity: 1;
+  top: 200px;
+  transform: rotate(0deg);
+  transition-delay: 0.32s;
+}
+
+.menu1 .share:hover.bottom .submenu li:nth-child(5) {
+  opacity: 1;
+  top: 250px;
+  transform: rotate(0deg);
+  transition-delay: 0.4s;
+}
+
+.menu1 .share:hover.left .submenu li:nth-child(1) {
+  opacity: 1;
+  left: -51px;
+  transform: rotate(0deg);
+  transition-delay: 0.5s;
+}
+
+.menu1 .share:hover.left .submenu li:nth-child(2) {
+  opacity: 1;
+  left: -102px;
+  transform: rotate(0deg);
+  transition-delay: 1s;
+}
+
+.menu1 .share:hover.left .submenu li:nth-child(3) {
+  opacity: 1;
+  left: -153px;
+  transform: rotate(0deg);
+  transition-delay: 1.5s;
+}
+
+.menu1 .share:hover.left .submenu li:nth-child(4) {
+  opacity: 1;
+  left: -204px;
+  transform: rotate(0deg);
+  transition-delay: 2s;
+}
+
+.menu1 .share:hover.left .submenu li:nth-child(5) {
+  opacity: 1;
+  left: -255px;
+  transform: rotate(0deg);
+  transition-delay: 2.5s;
+}
+
+.menu1 .share:hover.right .submenu li:nth-child(1) {
+  opacity: 1;
+  left: 50px;
+  transform: rotate(0deg);
+  transition-delay: 0.08s;
+}
+
+.menu1 .share:hover.right .submenu li:nth-child(2) {
+  opacity: 1;
+  left: 100px;
+  transform: rotate(0deg);
+  transition-delay: 0.16s;
+}
+
+.menu1 .share:hover.right .submenu li:nth-child(3) {
+  opacity: 1;
+  left: 150px;
+  transform: rotate(0deg);
+  transition-delay: 0.24s;
+}
+
+.menu1 .share:hover.right .submenu li:nth-child(4) {
+  opacity: 1;
+  left: 200px;
+  transform: rotate(0deg);
+  transition-delay: 0.32s;
+}
+
+.menu1 .share:hover.right .submenu li:nth-child(5) {
+  opacity: 1;
+  left: 250px;
+  transform: rotate(0deg);
+  transition-delay: 0.4s;
+}
+
+.menu1 .share:hover.top .submenu li:nth-child(1) {
+  opacity: 1;
+  top: -51px;
+  transition-delay: 0.08s;
+  transform: rotateY(0deg);
+  border-bottom: 1px dashed #d9d9d9;
+}
+
+.menu1 .share:hover.top .submenu li:nth-child(2) {
+  opacity: 1;
+  top: -102px;
+  transition-delay: 0.16s;
+  transform: rotateY(0deg);
+}
+
+.menu1 .share:hover.top .submenu li:nth-child(3) {
+  opacity: 1;
+  top: -153px;
+  transition-delay: 0.24s;
+  transform: rotateY(0deg);
+}
+
+.menu1 .share:hover.top .submenu li:nth-child(4) {
+  opacity: 1;
+  top: -204px;
+  transition-delay: 0.32s;
+  transform: rotateY(0deg);
+}
+
+.menu1 .share:hover.top .submenu li:nth-child(5) {
+  opacity: 1;
+  top: -255px;
+  transition-delay: 0.4s;
+  transform: rotateY(0deg);
+}
+
+.menu1 .submenu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu1 .submenu li {
+  transition: all ease-in-out 0.5s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+}
+
+.menu1 .submenu li a {
+  color: #212121;
+}
+
+.menu1 .submenu li:nth-child(1) {
+  transform: rotateX(45deg);
+}
+
+.menu1 .submenu li:nth-child(2) {
+  transform: rotateX(90deg);
+}
+
+.menu1 .submenu li:nth-child(3) {
+  transform: rotateX(135deg);
+}
+
+.menu1 .submenu li:nth-child(4) {
+  transform: rotateX(180deg);
+}
+
+.menu1.topRight {
+  top: 40px;
+  right: 25px;
+}
+
+.menu1.topLeft {
+  top: 29px;
+  left: 25px;
+}
+
+:host ::ng-deep .ui-slidemenu {
+  width: 0.5em
+}
+
+.firstBar {
+  background-color: #324866;
+  height: 25px;
+}
+
+::ng-deep .ui-menu, .ui-menu .ui-menu-child {
+  border: 0px;
+  background: red 0 0 repeat-x !important;
+}
+::ng-deep .ui-menu .ui-menuitem .ui-menuitem-link:hover {
+  background-color: red;
+}
+::ng-deep .ui-menu .ui-menuitem .ui-state-active {
+  background-color: red;
+}
+::ng-deep .ui-menu .ui-menuitem.ui-menuitem-active > .ui-menuitem-link, .ui-menu .ui-menuitem .ui-menuitem-link:hover {
+  background-color: red;
+}
+::ng-deep .menucus {
+  background: white !important;
+  font-size: 2rem;
+  border: none;
+  margin-left: 23%;
+}
+
+::ng-deep .menucus2 {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+::ng-deep .menucus3 {
+  background-color: red;
+}
+
+
+::ng-deep .p-menubar-root-list>.p-menuitem-active>p-menubarsub>.p-submenu-list {
+  display: block;
+  margin-left: 20px;
+  width: 200px;
+  font-size: 1.5rem;
+}
+
+::ng-deep .p-menubar .p-submenu-list>.p-menuitem-active>p-menubarsub>.p-submenu-list {
+  display: block;
+  left: 100%;
+  top: 0;
+  width: 200px;
+}
+

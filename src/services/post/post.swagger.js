@@ -1,6 +1,6 @@
 const postUser = {
   tags: [
-    'Users',
+    'End Point NON SECURISÉ',
   ],
   summary: 'Create Data',
   description: 'Create new data in DB',

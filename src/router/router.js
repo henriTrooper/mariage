@@ -69,7 +69,7 @@ const path = require('path')
 
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * * * * * * * * * * * ROUTAGE * * * * * * * * * * ** * * * * * * *
+ * * * * * * * * * * * ROUTAGE NON SECURISÉ * * * * * * * * * * ** * * * * * * *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -78,10 +78,10 @@ const path = require('path')
 
 router.get('/', async (req, res) => {
   //await getStarted(req, res);
-  res.sendFile(path.relative(process.cwd(),"../public/dist/regiment/index.html"))
+  res.sendFile(path.relative(process.cwd(),"../public/dist/FrontMhicity/index.html"))
 });
 
-router.get('/users', async (req, res) => {
+router.get('/users',  async (req, res) => {
   await getFindAllUser(req, res);
 });
 
@@ -176,7 +176,8 @@ router.delete('/user/purgeDB', async (req, res) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/register', async (req, res) => {
-  req.body = req.body.userConnect
+  req.body = req.body.register || req.body;
+
   if (validateEmail(req.body.email) === false) {
     res.status(400).send({
       success: false,
@@ -198,7 +199,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  req.body = req.body.userConnect
+  req.body = req.body.userConnect || req.body;
   if (!req.body.email || validateEmail(req.body.email) === false) {
     res.status(400).send({
       success: false,
@@ -212,11 +213,103 @@ router.post('/login', async (req, res) => {
   
 });
 
-// the user is not logged in, then it won’t be able to access the route and redirect to the login page in clientside based on the response.
-router.get('/profile', authMiddleware, (req, res) => {
-  res.json({
-    access: true,
-  });
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * ROUTAGE SECURISÉ * * * * * * * * * * ** * * * * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.get('/users_JWT', authMiddleware, async (req, res) => {
+  await getFindAllUser(req, res);
 });
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * ROUTAGE POST  * * * * * * * * * * ** * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.post('/addUser_JWT',authMiddleware, async (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'Name is required',
+    });
+  } else if (typeof (req.body.isPublic) !== 'boolean') {
+    res.status(400).send({
+      success: false,
+      message: 'isPublic is required or syntaxe incorrect',
+    });
+  } else {
+    await insertOne(req, res);
+  }
+});
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * ROUTAGE UPDATE  * * * * * * * * * * ** * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.put('/user_JWT/id/:userId',authMiddleware, async (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'Name is required',
+    });
+  } else if (typeof (req.body.isPublic) !== 'boolean') {
+    res.status(400).send({
+      success: false,
+      message: 'isPublic is required',
+    });
+  } else {
+    await updateById(req, res);
+  }
+});
+
+router.put('/user_JWT/param/:param',authMiddleware, async (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'Name is required',
+    });
+  } else if (typeof (req.body.isPublic) !== 'boolean') {
+    res.status(400).send({
+      success: false,
+      message: 'isPublic is required',
+    });
+  } else {
+    await updateByParam(req, res);
+  }
+});
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * ROUTAGE DELETE  * * * * * * * * * * ** * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.delete('/user_JWT/id/:userId',authMiddleware, async (req, res) => {
+  if (!req.headers.id) {
+    res.status(400).send({
+      success: false,
+      message: 'No ID find',
+    });
+  } else {
+    await deleteById(req, res);
+  }
+});
+
+router.delete('/user_JWT/param/:param',authMiddleware, async (req, res) => {
+    if (!req.body.name) {
+    res.status(400).send({
+      success: false,
+      message: 'No Param find',
+    });
+  } else {
+    await deleteByParam(req, res);
+  }
+});
+
+router.delete('/user/purgeDB_JWT',authMiddleware, async (req, res) => {
+  await purgeDB(req, res);
+});
+
 
 module.exports = router;

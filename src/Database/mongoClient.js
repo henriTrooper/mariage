@@ -3,11 +3,9 @@ const
  = require('mongodb').MongoClient;
  const Logger = require('../utils/logger');
 
-const uri = 'mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_Base?retryWrites=true&w=majority';
-
-                                                                    /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-                                                                    * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
-                                                                    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+   /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * * * * * * * * * * * ROUTAGE GET  * * * * * * * * * * ** * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
  * Fonction de started - Pour l'instant tous les utilisateurs
@@ -16,7 +14,7 @@ const uri = 'mongodb+srv://henri:interdit@config-base.lboaa.mongodb.net/config_B
  * @param {*} res
  */
 async function started(res) {
-    const client = new MongoClient(uri, {
+    const client = new MongoClient(process.env.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
@@ -27,9 +25,9 @@ async function started(res) {
                 message: 'Fail Connected...',
             });
         }
-        let db = client.db('config_Base');
+        let db = client.db(process.env.DATABASE);
 
-        db.collection("datas").find({}).sort({ name: 1 })
+        db.collection(process.env.COLLECTION_DATA).find({}).sort({ name: 1 })
         .toArray()
         .then(data => {
           Logger.info(`Successfully found ${data.length} documents.`)
@@ -47,7 +45,7 @@ async function started(res) {
  * @param {*} res
  */
 async function findAll(res) {
-    const client = new MongoClient(uri, {
+    const client = new MongoClient(process.env.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -58,9 +56,9 @@ async function findAll(res) {
                 message: 'Fail Connected...',
             });
         }
-        let db = client.db('config_Base');
+        let db = client.db(process.env.DATABASE);
 
-        db.collection("datas").find({}).sort({ name: 1 })
+        db.collection(process.env.COLLECTION_DATA).find({}).sort({ name: 1 })
         .toArray()
         .then(data => {
           Logger.info(`Successfully found ${data.length} documents.`)
@@ -82,7 +80,7 @@ async function findAll(res) {
  * @param {*} res
  */
 async function insertOne(data, res) {
-    const client = new MongoClient(uri, {
+    const client = new MongoClient(process.env.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -93,9 +91,9 @@ async function insertOne(data, res) {
                 message: 'Fail Connected...',
             });
         }
-        let db = client.db('config_Base');
+        let db = client.db(process.env.DATABASE);
 
-        db.collection("datas").insertOne(data, (err, data) => {
+        db.collection(process.env.COLLECTION_DATA).insertOne(data, (err, data) => {
             if (err) {
                 res.status(400).json({
                     success: false,
@@ -131,7 +129,7 @@ async function insertOne(data, res) {
  * @param {*} res
  */
 async function findIDAndUpdate(id, body, res) {
-    const client = new MongoClient(uri, {
+    const client = new MongoClient(process.env.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -142,8 +140,8 @@ async function findIDAndUpdate(id, body, res) {
                 message: 'Fail Connected...',
             });
         }
-        let db = client.db('config_Base');
-        db.collection("datas").findOneAndUpdate(id, { $set:body}, { upsert: true, returnOriginal: false} , (err, data) => {
+        let db = client.db(process.env.DATABASE);
+        db.collection(process.env.COLLECTION_DATA).findOneAndUpdate(id, { $set:body}, { upsert: true, returnOriginal: false} , (err, data) => {
             if (err) {
                 res.status(400).json({
                     success: false,
@@ -172,7 +170,7 @@ async function findIDAndUpdate(id, body, res) {
  * @param {*} res
  */
 async function findParamAndUpdate(param, body, res) {
-    const client = new MongoClient(uri, {
+    const client = new MongoClient(process.env.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -183,8 +181,8 @@ async function findParamAndUpdate(param, body, res) {
                 message: 'Fail Connected...',
             });
         }
-        let db = client.db('config_Base');
-        db.collection("datas").findOneAndUpdate(param, { $set:body}, { upsert: true, returnOriginal: false} , (err, data) => {
+        let db = client.db(process.env.DATABASE);
+        db.collection(process.env.COLLECTION_DATA).findOneAndUpdate(param, { $set:body}, { upsert: true, returnOriginal: false} , (err, data) => {
             if (err) {
                 res.status(400).json({
                     success: false,
@@ -222,7 +220,7 @@ async function findParamAndUpdate(param, body, res) {
  * @param {*} res
  */
 async function findIDAndDelete(data, res) {
-    const client = new MongoClient(uri, {
+    const client = new MongoClient(process.env.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -233,8 +231,8 @@ async function findIDAndDelete(data, res) {
                 message: 'Fail Connected...',
             });
         }
-        let db = client.db('config_Base');
-        db.collection("datas").findOneAndDelete(data, (err, data) => {
+        let db = client.db(process.env.DATABASE);
+        db.collection(process.env.COLLECTION_DATA).findOneAndDelete(data, (err, data) => {
             if (err) {
                 res.status(400).json({
                   success: false,
@@ -263,7 +261,7 @@ async function findIDAndDelete(data, res) {
 * @param {*} res
 */
 async function findParamAndDelete(data, res) {
-   const client = new MongoClient(uri, {
+   const client = new MongoClient(process.env.URI, {
        useNewUrlParser: true,
        useUnifiedTopology: true
    });
@@ -274,8 +272,8 @@ async function findParamAndDelete(data, res) {
                message: 'Fail Connected...',
            });
        }
-       let db = client.db('config_Base');
-       db.collection("datas").findOneAndDelete(data, (err, data) => {
+       let db = client.db(process.env.DATABASE);
+       db.collection(process.env.COLLECTION_DATA).findOneAndDelete(data, (err, data) => {
            if (err) {
                res.status(400).json({
                  success: false,
@@ -304,7 +302,7 @@ async function findParamAndDelete(data, res) {
 * @param {*} res
 */
 async function purgeDatabase(res) {
-   const client = new MongoClient(uri, {
+   const client = new MongoClient(process.env.URI, {
        useNewUrlParser: true,
        useUnifiedTopology: true
    });
@@ -315,8 +313,8 @@ async function purgeDatabase(res) {
                message: 'Fail Connected...',
            });
        }
-       let db = client.db('config_Base');
-       db.collection("datas").deleteMany({}, (err, data) => {
+       let db = client.db(process.env.DATABASE);
+       db.collection(process.env.COLLECTION_DATA).deleteMany({}, (err, data) => {
            if (err) {
                res.status(400).json({
                  success: false,

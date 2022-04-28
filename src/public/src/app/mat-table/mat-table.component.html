@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mat-Table</title>
+</head>
+
+<body style="margin: 20px;">
+    <ngx-spinner bdColor="rgba(0,0,0,0)" size="large" color="red" type="ball-scale-multiple" [fullScreen]="true">
+    </ngx-spinner>
+    <p-toast></p-toast>
+
+    <div class="card">
+
+        <!-- Bouton headers -->
+        <p-toolbar class="customToolbar" styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+                <button style="height: 25px;" type="button" pButton pRipple icon="pi pi-file-o" (click)="dt.exportCSV()"
+                    class="p-mr-2" pTooltip="CSV" tooltipPosition="top"></button>
+                <button style="height: 25px;" type="button" pButton pRipple icon="pi pi-file-excel"
+                    (click)="exportExcel()" class="p-button-success p-mr-2" pTooltip="XLS"
+                    tooltipPosition="top"></button>
+                <button style="height: 25px;" type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                    class="p-button-warning p-mr-2" pTooltip="PDF" tooltipPosition="top"></button>
+                <button style="height: 25px;" type="button" pButton pRipple [label]="Delete" icon="pi pi-trash"
+                    class="p-button-danger" (click)="deleteSelectedProducts()" pTooltip="Delete" tooltipPosition="top"
+                    [disabled]="!selectedProducts || !selectedProducts.length"></button>
+
+            </ng-template>
+
+            <ng-template pTemplate="right">
+                <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+                    class="p-mr-2 p-d-inline-block"></p-fileUpload>
+            </ng-template>
+        </p-toolbar>
+
+
+        <p-table [columns]="tableHeader" [value]="products" [sortOrder]="1" styleClass="p-datatable-responsive-demo"
+            [responsive]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,25]" [paginator]="true" [rows]="10"
+            sortMode="multiple" #dt [globalFilterFields]="['nom','prenom','email','prospect', 'mandat']"
+            [(selection)]="selectedProducts" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    <h5 class="p-m-0">Clients</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Global Search..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 8rem"></th>
+                    <th *ngFor="let col of tableHeader" [pSortableColumn]="col.field">
+                        <span>{{col.header}}</span>
+                        <p-sortIcon field="col.field">
+                        </p-sortIcon>
+                    </th>
+                    <th style="width: 24rem"></th>
+
+                </tr>
+                <tr>
+                    <th style="width: 8rem"></th>
+                    <th [pSortableColumn]="nom">
+                        <p-multiSelect placeholder=" Search by Nom" styleClass="p-column-filter" [options]="optionsNom"
+                            (onChange)="dt.filter($event.value,'nom','in')"></p-multiSelect>
+                    </th>
+                    <th [pSortableColumn]="prenom">
+                        <p-multiSelect placeholder=" Search by prenom" styleClass="p-column-filter"
+                            [options]="optionsPrenom" (onChange)="dt.filter($event.value,'prenom','in')">
+                        </p-multiSelect>
+                    </th>
+                    <th [pSortableColumn]="email">
+                        <p-multiSelect placeholder=" Search by Mail" styleClass="p-column-filter"
+                            [options]="optionsMail" (onChange)="dt.filter($event.value,'email','in')"></p-multiSelect>
+                    </th>
+                    <th [pSortableColumn]="prospect">
+                        <p-multiSelect placeholder=" Search by Prospect" styleClass="p-column-filter"
+                            [options]="optionsProspect" (onChange)="dt.filter($event.value,'prospect','in')">
+                        </p-multiSelect>
+                    </th>
+                    <th [pSortableColumn]="mandat">
+                        <p-multiSelect placeholder=" Search by Mandat" styleClass="p-column-filter"
+                            [options]="optionsMandat" (onChange)="dt.filter($event.value,'mandat','in')">
+                        </p-multiSelect>
+                    </th>
+                    <th [pSortableColumn]="date">
+                        <!--             <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')" [showButtonBar]="true" styleClass="p-column-filter" placeholder="Last RDV" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
+ -->
+                    </th>
+                    <th>
+                    </th>
+                    <th style="width: 24rem"></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>
+                        <img src={{product.photo}} [class]="'flag flag-'" width="30">
+                    </td>
+                    <td>{{product.nom}}</td>
+                    <td>{{product.prenom}}</td>
+                    <td>{{product.email}}</td>
+                    <td>{{product.prospect}}</td>
+                    <td>{{product.mandat}}</td>
+                    <td *ngIf="product.rdv.length > 0; else elseBlock">{{product.rdv[0].startedDate | date: 'yyyy-MM-dd'}}</td>
+                    <td *ngIf="product.bien.length > 0; else elseBlock">{{product.bien.length}}</td>
+                    <ng-template #elseBlock>
+                        <td></td>
+                    </ng-template>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                            (click)="editProduct(product)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="deleteProduct(product)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    In total there are {{products ? products.length : 0 }} products.
+                </div>
+            </ng-template>
+
+        </p-table>
+    </div>
+
+    <p-dialog [(visible)]="productDialog" [style]="{width: '500px'}" header="Client Details" [modal]="true"
+        styleClass="p-fluid">
+        <ng-template pTemplate="content">
+
+            <div class="p-field">
+                <label class="p-mb-3">Profil </label>
+                <div class="p-formgrid p-grid">
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="isActive1" name="isActive" [value]="true" [(ngModel)]="product.isActive">
+                        </p-radioButton>
+                        <label for="isActive1">Actif</label>
+                    </div>
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="isActive2" name="isActive" [value]="false" [(ngModel)]="product.isActive">
+                        </p-radioButton>
+                        <label for="isActive2">Desactif</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <label for="nom">Nom</label>
+                    <input type="text" pInputText id="nom" [(ngModel)]="product.nom" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !product.nom">Nom is required.</small>
+                </div>
+                <div class="p-field p-col">
+                    <label for="prenom">Prenom</label>
+                    <input type="text" pInputText id="prenom" [(ngModel)]="product.prenom" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !product.prenom">Prenom is required.</small>
+                </div>
+            </div>
+
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <label for="email">Email</label>
+                    <input type="email" pInputText id="email" [(ngModel)]="product.email" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !product.email">Email is required.</small>
+                </div>
+                <div class="p-field p-col">
+                    <label for="telephone">Téléphone</label>
+                    <input type="tel" pInputText id="telephone" [(ngModel)]="product.telephone" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !product.telephone">Telephone is required.</small>
+                </div>
+            </div>
+
+            <div class="p-field">
+                <label for="adresse">Adresse</label>
+                <input type="tel" pInputText id="adresse" [(ngModel)]="product.adresse" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !product.adresse">Adresse is required.</small>
+            </div>
+            <div class="p-field">
+                <label for="note">Note</label>
+                <textarea id="note" pInputTextarea [(ngModel)]="product.note" required rows="3" cols="20"></textarea>
+            </div>
+
+            <div class="p-field">
+                <label class="p-mb-3">Mandat</label>
+                <div class="p-formgrid p-grid">
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="mandat1" name="mandat" value="immobilier" [(ngModel)]="product.mandat">
+                        </p-radioButton>
+                        <label for="mandat1">Immoblier</label>
+                    </div>
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="mandat2" name="mandat" value="conciergerie" [(ngModel)]="product.mandat">
+                        </p-radioButton>
+                        <label for="mandat2">Conciergerie</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-field">
+                <label class="p-mb-3">Prospect</label>
+                <div class="p-formgrid p-grid">
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="prospect1" name="prospect" value="mandataire" [(ngModel)]="product.prospect">
+                        </p-radioButton>
+                        <label for="prospect1">Mandataire</label>
+                    </div>
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="prospect2" name="prospect" value="agence" [(ngModel)]="product.prospect">
+                        </p-radioButton>
+                        <label for="prospect2">Agence</label>
+                    </div>
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="prospect3" name="prospect" value="particulier"
+                            [(ngModel)]="product.prospect"></p-radioButton>
+                        <label for="prospect3">Particulier</label>
+                    </div>
+                    <div class="p-field-radiobutton p-col-6">
+                        <p-radioButton id="prospect4" name="prospect" value="professionnel"
+                            [(ngModel)]="product.prospect"></p-radioButton>
+                        <label for="prospect3">Professionnel</label>
+                    </div>
+                </div>
+            </div>
+
+            <p-accordion>
+                <p-accordionTab>
+                    <p-header style="width: 100%;">
+                        <span style="font-size: initial;">Document(s) {{product.document.length}}</span>
+                    </p-header>
+                    <p-fileUpload customUpload="true" (uploadHandler)="onUpload($event)" multiple="multiple"
+                        chooseLabel="Choix du fichier" accept="application/pdf">
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="product.document.length">
+                                <li *ngFor="let document of product.document">{{document.titre}} - {{document.date}}
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+                </p-accordionTab>
+                <p-accordionTab>
+                    <p-header style="width: 100%;">
+                        <span style="font-size: initial;">Rdv(s) {{product.rdv.length}}</span>
+                        <button (click)="addRdv()" style="float: right; font-size: 2rem;" pButton pRipple type="button"
+                            icon="pi pi-plus" class="p-button-rounded p-button-text"></button>
+                            <button (click)="removeRdv()" style="float: right; font-size: 2rem;" pButton pRipple type="button"
+                            icon="pi pi-minus" class="p-button-rounded p-button-text"></button>
+                    </p-header>
+                    <div class="p-field" *ngFor="let rdv of product.rdv;let i=index;">
+                        <span style="color: blue; font-weight: bold; font-size: 15px;">RDV :
+                            {{product.rdv.length - i}}</span>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <label for="titre">Titre</label>
+                                <input type="text" pInputText id="titre{{i}}" [(ngModel)]="rdv.titre" required
+                                    autofocus />
+                                <small class="p-invalid" *ngIf="submitted && !rdv.titre">Titre is required.</small>
+                            </div>
+                            <div class="p-field p-col">
+                                <label for="dateStarted">Date de début</label>
+                                <p-calendar [(ngModel)]=" rdv.startedDate" [showTime]="true" inputId="dateStarted{{i}}"></p-calendar>
+                                <small class="p-invalid" *ngIf="submitted && !rdv.startedDate">Date is required.</small>
+                            </div>
+                            <div class="p-field p-col">
+                                <label for="dateEnd">Date de fin</label>
+                                <p-calendar [(ngModel)]="rdv.endDate" [showTime]="true" inputId="dateEnd{{i}}"></p-calendar>
+                                <small class="p-invalid" *ngIf="submitted && !rdv.endDate">Date is required.</small>
+                            </div>
+                        </div>
+                        <div class="p-field">
+                            <label for="description">Description</label>
+                            <textarea id="description{{i}}" pInputTextarea [(ngModel)]="rdv.description" required
+                                rows="3" cols="20"></textarea>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab>
+                    <p-header style="width: 100%;">
+                        <span style="font-size: initial;">Bien(s) {{product.bien.length}}</span>
+                        <button (click)="addBien()" style="float: right; font-size: 2rem;" pButton pRipple type="button"
+                            icon="pi pi-plus" class="p-button-rounded p-button-text"></button>
+                            <button (click)="removeBien()" style="float: right; font-size: 2rem;" pButton pRipple type="button"
+                            icon="pi pi-minus" class="p-button-rounded p-button-text"></button>
+                    </p-header>
+                    <div class="p-field" *ngFor="let bien of product.bien;let i=index;">
+                        <span style="color: blue; font-weight: bold; font-size: 15px;">Bien {{bien.date | date: 'yyyy-MM-dd'}}</span>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <label for="titre">Nom</label>
+                                <input type="text" pInputText id="nom{{i}}" [(ngModel)]="bien.nom" required autofocus />
+                                <small class="p-invalid" *ngIf="submitted && !bien.nom">Nom is required.</small>
+                            </div>
+                        </div>
+                        <div class="p-field">
+                            <div class="p-formgrid p-grid">
+                                <div class="p-field-radiobutton p-col-6">
+                                    <p-radioButton id="maison1" name="maison" value="maison" [(ngModel)]="bien.model">
+                                    </p-radioButton>
+                                    <label for="maison1">Maison</label>
+                                </div>
+                                <div class="p-field-radiobutton p-col-6">
+                                    <p-radioButton id="appartement2" name="appartement" value="appartement"
+                                        [(ngModel)]="bien.model"></p-radioButton>
+                                    <label for="appartement2">Appartement</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-field">
+                            <label for="description">Description</label>
+                            <textarea id="bienDescription{{i}}" pInputTextarea [(ngModel)]="bien.description" required
+                                rows="3" cols="20"></textarea>
+                        </div>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <label for="matterport">Lien Matterport</label>
+                                <input type="text" pInputText id="matterport{{i}}" [(ngModel)]="bien.lien" required
+                                    autofocus />
+                                <small class="p-invalid" *ngIf="submitted && !bien.lien">Matterport is required.</small>
+                            </div>
+                        </div>
+                        <label>Dernière modification des tarifs {{bien.tarif.date | date: 'yyyy-MM-dd'}}</label>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <label for="horizontalPayer{{i}}">Payer</label>
+                                <p-inputNumber [(ngModel)]="bien.tarif.payer" [showButtons]="true"
+                                    buttonLayout="horizontal" inputId="horizontalPayer{{i}}" spinnerMode="horizontal"
+                                    [step]="1" decrementButtonClass="p-button-danger"
+                                    incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
+                                    decrementButtonIcon="pi pi-minus" mode="currency" currency="EUR">
+                                </p-inputNumber>
+                            </div>
+                            <div class="p-field p-col">
+                                <label for="horizontalNonPayer{{i}}">Non Payer</label>
+                                <p-inputNumber [(ngModel)]="bien.tarif.nonPayer" [showButtons]="true"
+                                    buttonLayout="horizontal" inputId="horizontalNonPayer{{i}}" spinnerMode="horizontal"
+                                    [step]="1" decrementButtonClass="p-button-danger"
+                                    incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
+                                    decrementButtonIcon="pi pi-minus" mode="currency" currency="EUR">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+                        <!-- <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <label for="horizontalNonPayer{{i}}">Reste à payer</label>
+                                <p-inputNumber (onchange)="value()" [(ngModel)]="value1" [showButtons]="true"
+                                    buttonLayout="horizontal" inputId="horizontalNonPayer{{i}}" spinnerMode="horizontal" [step]="1"
+                                    decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
+                                    incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" mode="currency"
+                                    currency="EUR">
+                                </p-inputNumber>
+                            </div>
+                        </div> -->
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab>
+                    <p-header style="width: 100%;">
+                        <span style="font-size: initial;">Feedback(s) {{product.feedback.length}}</span>
+                    </p-header>
+                    <div class="p-field" *ngFor="let feedback of product.feedback; let i=index;">
+                        <span style="color: blue; font-weight: bold; font-size: 15px;">Feedback {{feedback.date}}
+                            <p-rating [ngModel]="feedback.rate" readonly="true" stars="5" [cancel]="false"></p-rating>
+                        </span>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <label for="feedbackNom{{i}}">Nom</label>
+                                <input disabled type="text" pInputText id="feedbackNom{{i}}" [(ngModel)]="feedback.nom"
+                                    required autofocus />
+                            </div>
+                            <div class="p-field p-col">
+                                <label for="feedbackPrenom{{i}}">Prenom</label>
+                                <input disabled type="text" pInputText id="feedbackPrenom{{i}}"
+                                    [(ngModel)]="feedback.prenom" required autofocus />
+                            </div>
+                        </div>
+                        <div class="p-field p-col">
+                            <label for="feedbackTitre{{i}}">Titre</label>
+                            <input disabled type="text" pInputText id="feedbackTitre{{i}}" [(ngModel)]="feedback.titre"
+                                required autofocus />
+                        </div>
+
+                        <div class="p-field">
+                            <label for="feedbackDescription{{i}}">Description</label>
+                            <textarea id="feedbackDescription{{i}}" pInputTextarea [(ngModel)]="feedback.description"
+                                required rows="3" cols="20"></textarea>
+                        </div>
+                    </div>
+
+                </p-accordionTab>
+            </p-accordion>
+
+
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                (click)="saveProduct()"></button>
+        </ng-template>
+    </p-dialog>
+
+    <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+</body>
+
+</html>

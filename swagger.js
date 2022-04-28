@@ -1,3 +1,4 @@
+// NON SECURISE
 const postUser = require('./src/services/post/post.swagger');
 
 const getUser = require('./src/services/get/{user}/get.swagger');
@@ -13,6 +14,21 @@ const updateByParam = require('./src/services/update/param/update.swagger');
 const register = require('./src/services/post/Auth/register/register.swagger');
 const login = require('./src/services/post/Auth/login/login.swagger');
 
+// SECURISE
+const postUser_JWT = require('./src/services/post/post_JWT.swagger');
+
+const getUser_JWT = require('./src/services/get/{user}/get_JWT.swagger');
+
+const deleteById_JWT = require('./src/services/delete/id/delete_JWT.swagger');
+const deleteByParam_JWT = require('./src/services/delete/param/delete_JWT.swagger');
+const purgeDB_JWT = require('./src/services/delete/purge/delete_JWT.swagger');
+
+const updateById_JWT = require('./src/services/update/id/update_JWT.swagger');
+const updateByParam_JWT = require('./src/services/update/param/update_JWT.swagger');
+
+
+
+
 const {
   app,
 } = require('./index');
@@ -22,13 +38,13 @@ const swaggerDocument = {
   openapi: '3.0.1',
   info: {
     version: '1.3.0',
-    title: 'Users',
+    title: 'API GENERIQUE FOR ANGULAR FORMATION',
     description: 'User management API',
     termsOfService: 'https://swagger.io/',
     contact: {
       name: 'Mersch Henri',
-      email: 'mersch.henri@icloud.com',
-      url: ''
+      email: 'henri.mersch@capgemini.com',
+      url: 'https://www.capgemini.com/fr-fr/'
     },
     license: {
       name: 'Apache 2.0',
@@ -36,10 +52,10 @@ const swaggerDocument = {
     }
   },
   servers: [{
-      url: 'http://localhost:3000/api',
-      description: 'LOCAL server'
-    },
-    {
+    url: 'http://localhost:3000/api',
+    description: 'LOCAL server'
+  },
+    /* {
       url: 'http://testapplication-env.eba-ymzz7z5z.us-east-1.elasticbeanstalk.com/api',
       description: 'DEV server'
     },
@@ -63,7 +79,7 @@ const swaggerDocument = {
           "default": "v1"
         }
       }
-    },
+    }, */
   ],
   security: [{
     bearerAuth: []
@@ -83,16 +99,29 @@ const swaggerDocument = {
   produces: [
     'application/json'
   ],
-  tags: [{
-    name: 'Users',
-    description: 'API for users in the system'
-  }, {
-    name: 'Auth',
-    description: 'API for authenticate in the system'
-  }],
+  tags: [
+    {
+      name: 'Auth',
+      description: 'API for authenticate in the system'
+    },
+    {
+      name: 'End Point NON SECURISÉ',
+      description: ''
+    },
+    {
+      name: 'End Point SECURISÉ',
+      description: ''
+    },
+    {
+      name: 'Other',
+      description: '',
+    }],
   "paths": {
     "/addUser": {
       post: postUser
+    },
+    "/addUser_JWT": {
+      post: postUser_JWT 
     },
     "/": {
       get: getStart
@@ -100,16 +129,34 @@ const swaggerDocument = {
     "/users": {
       get: getUser
     },
+    "/users_JWT": {
+      get: getUser_JWT
+    },
     "/user/id/{id}": {
       delete: deleteById,
       put: updateById
+    },
+    "/user_JWT/id/{id}": {
+      delete: deleteById_JWT,
+      put: updateById_JWT
+    },
+    "/user_JWT/id/{id}": {
+      delete: deleteById_JWT,
+      put: updateById_JWT
     },
     "/user/param/{param}": {
       delete: deleteByParam,
       put: updateByParam
     },
-    "/user/purgeDB" :{
+    "/user_JWT/param/{param}": {
+      delete: deleteByParam_JWT,
+      put: updateByParam_JWT
+    },
+    "/user/purgeDB": {
       delete: purgeDB
+    },
+    "/user/purgeDB_JWT": {
+      delete: purgeDB_JWT
     },
     "/register": {
       post: register
@@ -117,9 +164,6 @@ const swaggerDocument = {
     "/login": {
       post: login
     },
-    "/profile": {
-      get: ""
-    }
   },
   "definitions": {
     User: {
@@ -201,7 +245,7 @@ const swaggerDocument = {
         }
       },
     },
-    OnceParam : {
+    OnceParam: {
       required: [
         "name",
       ],
@@ -228,43 +272,43 @@ const swaggerDocument = {
     links: {
       create: {
         operationId: "createUsers",
-        parameters:{}
+        parameters: {}
       },
       findAll: {
         operationId: "FindAllUsers",
-        parameters:{}
+        parameters: {}
       },
       started: {
         operationId: "Started",
-        parameters:{}
+        parameters: {}
       },
       updateID: {
         operationId: "updateID",
-        parameters:{}
+        parameters: {}
       },
       updateParam: {
         operationId: "updateParam",
-        parameters:{}
+        parameters: {}
       },
       deleteID: {
         operationId: "deletebyId",
-        parameters:{}
+        parameters: {}
       },
       deleteParam: {
         operationId: "deletebyParam",
-        parameters:{}
+        parameters: {}
       },
       purgeDB: {
         operationId: "purgeDB",
-        parameters:{}
+        parameters: {}
       },
       createProfil: {
         operationId: "createProfilUser",
-        parameters:{}
+        parameters: {}
       },
       login: {
         operationId: "loginUser",
-        parameters:{}
+        parameters: {}
       },
     }
   }
