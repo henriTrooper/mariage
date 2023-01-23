@@ -9,7 +9,7 @@
     "lint": "eslint src --fix",
     "test": "mocha --exit",
     "sonar": "node sonar-project.js",
-    "deploy": "ng deploy --base-href=/mariage/"
+    "deploy": "npm run start"
   },
   "author": "Henri",
   "license": "MIT",
