@@ -41,6 +41,7 @@ async function connectMongo() {
       date: new Date()
     }
     client.db(process.env.DATABASE).collection(process.env.COLLECTION_LOG).insertOne(connecting, (err, data) => {
+      console.log('data', data)
       if (err) {
         Logger.warn('ECHEC mongodb');
       } else if (!data) {
