@@ -31,11 +31,12 @@ async function connectMongo() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+  console.log('ici', client)
   await client.connect((err) => {
     if (err) {
       Logger.warn('Failed Connected');
     }
-    connecting = { 
+    let connecting = { 
       connectionStart: true,
       date: new Date()
     }
